@@ -9,7 +9,7 @@ package br.ufjf.dcc168;
  *
  * @author YanNotebook
  */
-class Aluno {
+public class Aluno {
     private String nome;
     private double nota;
 

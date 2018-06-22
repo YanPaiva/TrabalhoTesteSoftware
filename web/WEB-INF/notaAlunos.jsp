@@ -1,3 +1,4 @@
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <p>Bem vindo</p>
 <form method="POST" action="notaSalva.html">
@@ -6,14 +7,11 @@
             <tr>
                 <td><h4>Nota dos Alunos</h4></td>
             </tr>
-
-
-            <c:forEach var="user" items="${grupo}">
+            <c:forEach var="aluno" items="${grupo}">
                 <tr>
-                    <td>${user.getNome()}</td>
+                    <td>${aluno.getNome()}</td>
                     <td> <input type="number" min="0" max="<%=request.getAttribute("nota")%>"
-                               name="txtNota" value="<%=request.getAttribute("nota")%>" size="20" />
-               
+                                name="txtNota" value="<%=request.getAttribute("nota")%>" size="20" />       
                     </td>
                 </tr>
             </c:forEach>
