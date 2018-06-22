@@ -6,12 +6,19 @@
             <tr>
                 <td><h4>Nota dos Alunos</h4></td>
             </tr>
-            <c:forEach var="aluno" items="grupo">
+
+
+            <c:forEach var="user" items="${grupo}">
                 <tr>
-                    <td><h4>${aluno.getNome()}</h4></td>
-                    <td><input type="number" min="0" max="${grupo.getNota()}" name="nomta" value="${grupo.getNota()}" size="20" /></td>
+                    <td>${user.getNome()}</td>
+                    <td> <input type="number" min="0" max="<%=request.getAttribute("nota")%>"
+                               name="txtNota" value="<%=request.getAttribute("nota")%>" size="20" />
+               
+                    </td>
                 </tr>
             </c:forEach>
+
+
             <tr>
                 <td><input type="submit" value="Salvar"/></td>
             </tr>

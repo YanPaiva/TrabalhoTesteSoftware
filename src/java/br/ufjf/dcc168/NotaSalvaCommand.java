@@ -26,7 +26,14 @@ class NotaSalvaCommand implements Command {
                 
                 dispachante.forward(request, response);
             }else{
+                GrupoDao.getInstace();               
+                GrupoDao.setNota(Double.parseDouble( request.getParameter("txtNota")));
+                GrupoDao.setNotaAlunos(Double.parseDouble(request.getParameter("txtNota")));
                 RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/notaAlunos.jsp");
+                
+                request.setAttribute("grupo", GrupoDao.getInstace());
+                
+                request.setAttribute("nota", GrupoDao.getNota());
                 request.setAttribute("titulo",
                         "Pagina inicial");
                 dispachante.forward(request, response);
