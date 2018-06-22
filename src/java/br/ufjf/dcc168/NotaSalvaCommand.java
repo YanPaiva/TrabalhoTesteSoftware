@@ -12,10 +12,18 @@ class NotaSalvaCommand implements Command {
     public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         {
             if (request.getParameter("btnSalvar") != null) {
-
+                GrupoDao.getInstace();               
                 RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/notaSalva.jsp");
+               
+                GrupoDao.setNota(Double.parseDouble( request.getParameter("txtNota")));
+                GrupoDao.setNotaAlunos(Double.parseDouble( request.getParameter("txtNota")));
                 request.setAttribute("titulo",
                         "Pagina inicial");
+                
+                for (Aluno a : GrupoDao.getInstace()) {
+                    System.out.println(a.getNome()+"+"+a.getNota());
+                }
+                
                 dispachante.forward(request, response);
             }else{
                 RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/notaAlunos.jsp");

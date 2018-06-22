@@ -5,8 +5,9 @@
         <tbody>
             <tr>
                 <td><h4>Coloque a nota do Grupo: </h4></td>
-                <td><input type="number" min="0" max="100" name="nomta" value="" size="20" /></td>
+                <td><input type="number" min="0" max="100" name="txtNota" value="" size="20" /></td>
             </tr>
+            
             <tr>
                 <td><input type="submit" name="btnSalvar" value="Salvar" /></td>
                 <td><input type="submit" name="btnEditarNota" value="Editar Nota Individual" /></td>
