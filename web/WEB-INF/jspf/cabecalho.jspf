@@ -1,0 +1,19 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE HTML>
+<html>
+    <head>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nota do Grupo</th>
+                <th>Nota de Prova</th>
+                <th>Nota Final</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="index.html">grupo</a></td>
+                <td>prova</td>
+                <td>Final</td>
+            </tr>
+        </tbody>
+    </table>

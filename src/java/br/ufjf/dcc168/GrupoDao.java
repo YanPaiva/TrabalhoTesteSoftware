@@ -21,10 +21,15 @@ public class GrupoDao {
             grupo = new ArrayList<Grupo>();            
             //cria grupo de exemplo
             Grupo exemplo = new Grupo();
+            Grupo exemplo2 = new Grupo();
             //cria Array de Alunos dentro do grupo de exemplo
             exemplo.getInstace();
+            exemplo2.getInstace();
             grupo.add(exemplo);
-            
+            grupo.add(exemplo2);
+            //isso aqui tem que arrumar bonitinho, só pra testar msm
+            grupo.get(0).setId(0);
+            grupo.get(1).setId(1);
          // pegar no JSON todos os grupos da disciplina     
         }
         return grupo;

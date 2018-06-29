@@ -1,6 +1,6 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<p>Bem vindo</p>
+<%@include file="jspf/cabecalho.jspf" %>
 <form method="POST" action="notaSalva.html">
     <table border="1">
         <tbody>
@@ -23,5 +23,5 @@
         </tbody>
     </table>
 </form>
-
+<%@include file="jspf/rodape.jspf" %>
 

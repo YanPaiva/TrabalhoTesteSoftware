@@ -14,6 +14,7 @@ class IndexCommand implements Command {
                 RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/notaGrupo.jsp");
                 request.setAttribute("titulo",
                         "Pagina inicial");
+                request.setAttribute("todosGrupos", GrupoDao.getInstace());
                 dispachante.forward(request, response);
          
         }

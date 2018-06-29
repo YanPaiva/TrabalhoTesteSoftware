@@ -11,18 +11,17 @@ class NotaSalvaCommand implements Command {
     @Override
     public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         {
+            int numGrupo = Integer.parseInt(request.getParameter("cbGrupo"));
             if (request.getParameter("btnSalvar") != null) {
                 GrupoDao.getInstace();               
                 RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/notaSalva.jsp");
-                
-                
-                
-                GrupoDao.getGrupoDesejado(0).setNota(Double.parseDouble( request.getParameter("txtNota")));
-                GrupoDao.getGrupoDesejado(0).setNotaAlunos(Double.parseDouble( request.getParameter("txtNota")));
+                                
+                GrupoDao.getGrupoDesejado(numGrupo).setNota(Double.parseDouble( request.getParameter("txtNota")));
+                GrupoDao.getGrupoDesejado(numGrupo).setNotaAlunos(Double.parseDouble( request.getParameter("txtNota")));
                 request.setAttribute("titulo",
                         "Pagina inicial");
                 
-                for (Aluno a : GrupoDao.getGrupoDesejado(0).getInstace()) {
+                for (Aluno a : GrupoDao.getGrupoDesejado(numGrupo).getInstace()) {
                     System.out.println(a.getNome()+"+"+a.getNota());
                 }
                 
@@ -30,13 +29,13 @@ class NotaSalvaCommand implements Command {
             }else{
                 GrupoDao.getInstace();               
                 
-                GrupoDao.getGrupoDesejado(0).setNota(Double.parseDouble( request.getParameter("txtNota")));
+                GrupoDao.getGrupoDesejado(numGrupo).setNota(Double.parseDouble( request.getParameter("txtNota")));
                 RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/notaAlunos.jsp");
                 
-                request.setAttribute("grupo", GrupoDao.getInstace().get(0).getInstace());
+                request.setAttribute("grupo", GrupoDao.getInstace().get(numGrupo).getInstace());
                 
-                request.setAttribute("nota", GrupoDao.getGrupoDesejado(0).getNota());
-                for (Aluno aluno : GrupoDao.getGrupoDesejado(0).getInstace()) {
+                request.setAttribute("nota", GrupoDao.getGrupoDesejado(numGrupo).getNota());
+                for (Aluno aluno : GrupoDao.getGrupoDesejado(numGrupo).getInstace()) {
                     System.out.println(aluno.getNome());
                 }
                 request.setAttribute("titulo",

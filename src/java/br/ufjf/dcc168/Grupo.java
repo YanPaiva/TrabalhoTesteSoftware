@@ -12,7 +12,23 @@ import java.util.ArrayList;
  * @author YanNotebook
  */
 public class Grupo {
+    private int id;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ArrayList<Aluno> getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(ArrayList<Aluno> grupo) {
+        this.grupo = grupo;
+    }
     private ArrayList<Aluno> grupo;
     private String feedback;
     private double nota;
