@@ -13,53 +13,34 @@ import java.util.List;
  * @author YanNotebook
  */
 public class GrupoDao {
-    private static ArrayList<Aluno> grupo;
-    private static String feedback;
-    private static double nota;
+    private static ArrayList<Grupo> grupo;
     
-    public static ArrayList<Aluno> getInstace() {
+    public static ArrayList<Grupo> getInstace() {
         if (grupo == null) {
-            grupo = new ArrayList<Aluno>();
-            for(int i = 0; i<5 ;i++ ){
-                Aluno a = new Aluno();
-                a.setNome("aluno"+i);
-                grupo.add(a);
-            }        
+            //cria Array de grupo
+            grupo = new ArrayList<Grupo>();            
+            //cria grupo de exemplo
+            Grupo exemplo = new Grupo();
+            //cria Array de Alunos dentro do grupo de exemplo
+            exemplo.getInstace();
+            grupo.add(exemplo);
+            
+         // pegar no JSON todos os grupos da disciplina     
         }
         return grupo;
     }
 
     public GrupoDao() {
     }
-
-    public static ArrayList<Aluno> getGrupo() {
+    public static Grupo getGrupoDesejado(int id){
+        return grupo.get(id);    
+    }
+    public static ArrayList<Grupo> getGrupo() {
         return grupo;
     }
 
-    public static void setGrupo(ArrayList<Aluno> grupo) {
+    public static void setGrupo(ArrayList<Grupo> grupo) {
         GrupoDao.grupo = grupo;
     }
-
-    public static double getNota() {
-        return nota;
-    }
-
-    public static void setNota(double nota) {
-        GrupoDao.nota = nota;
-    }
-    public static void setNotaAlunos(double nota){
-        for (Aluno aluno : grupo) {
-            aluno.setNota(nota);
-        }
-    }
-
-    public static String getFeedback() {
-        return feedback;
-    }
-
-    public static void setFeedback(String feedback) {
-        GrupoDao.feedback = feedback;
-    }
-    
 }
 

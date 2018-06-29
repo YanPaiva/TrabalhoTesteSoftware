@@ -6,6 +6,7 @@
             <tr>
                 <td><h4>Coloque a nota do Grupo: </h4></td>
                 <td><input type="number" min="0" max="100" name="txtNota" value="" size="20" /></td>
+                
             </tr>
             
             <tr>

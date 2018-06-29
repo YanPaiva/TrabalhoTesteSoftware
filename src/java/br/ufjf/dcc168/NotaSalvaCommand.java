@@ -14,13 +14,15 @@ class NotaSalvaCommand implements Command {
             if (request.getParameter("btnSalvar") != null) {
                 GrupoDao.getInstace();               
                 RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/notaSalva.jsp");
-               
-                GrupoDao.setNota(Double.parseDouble( request.getParameter("txtNota")));
-                GrupoDao.setNotaAlunos(Double.parseDouble( request.getParameter("txtNota")));
+                
+                
+                
+                GrupoDao.getGrupoDesejado(0).setNota(Double.parseDouble( request.getParameter("txtNota")));
+                GrupoDao.getGrupoDesejado(0).setNotaAlunos(Double.parseDouble( request.getParameter("txtNota")));
                 request.setAttribute("titulo",
                         "Pagina inicial");
                 
-                for (Aluno a : GrupoDao.getInstace()) {
+                for (Aluno a : GrupoDao.getGrupoDesejado(0).getInstace()) {
                     System.out.println(a.getNome()+"+"+a.getNota());
                 }
                 
@@ -28,13 +30,13 @@ class NotaSalvaCommand implements Command {
             }else{
                 GrupoDao.getInstace();               
                 
-                GrupoDao.setNota(Double.parseDouble( request.getParameter("txtNota")));
+                GrupoDao.getGrupoDesejado(0).setNota(Double.parseDouble( request.getParameter("txtNota")));
                 RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/notaAlunos.jsp");
                 
-                request.setAttribute("grupo", GrupoDao.getInstace());
+                request.setAttribute("grupo", GrupoDao.getInstace().get(0).getInstace());
                 
-                request.setAttribute("nota", GrupoDao.getNota());
-                for (Aluno aluno : GrupoDao.getInstace()) {
+                request.setAttribute("nota", GrupoDao.getGrupoDesejado(0).getNota());
+                for (Aluno aluno : GrupoDao.getGrupoDesejado(0).getInstace()) {
                     System.out.println(aluno.getNome());
                 }
                 request.setAttribute("titulo",
