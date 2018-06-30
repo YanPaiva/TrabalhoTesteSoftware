@@ -12,15 +12,15 @@ import java.util.ArrayList;
  * @author YanNotebook
  */
 public class Aluno {
-
+    private int id;
     private String nome;
     private String descricao;
-    private static ArrayList<Double> nota = new ArrayList<>();
+    private ArrayList<Double> nota = new ArrayList<>();
     
 
-    public Aluno(String nome, double nota) {
+    public Aluno(String nome, int id) {
         this.nome = nome;
-        this.nota.add(nota);
+        this.id=id;
     }
 
 
@@ -32,12 +32,12 @@ public class Aluno {
         this.descricao = descricao;
     }
 
-    public static ArrayList<Double> getNota() {
+    public ArrayList<Double> getNota() {
         return nota;
     }
 
-    public static void setNota(ArrayList<Double> nota) {
-        Aluno.nota = nota;
+    public void setNota(ArrayList<Double> nota) {
+        this.nota = nota;
     }
 
 
@@ -63,5 +63,13 @@ public class Aluno {
     }
     public void setNotaExist(double notaAtt, int id ){
         nota.set(id, notaAtt);    
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

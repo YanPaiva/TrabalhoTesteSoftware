@@ -23,13 +23,14 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author YanNotebook
  */
-@WebServlet(name = "NotaServlet", urlPatterns = {"/index.html" , "/notaSalva.html"})
+@WebServlet(name = "NotaServlet", urlPatterns = {"/index.html", "/notaSalva.html", "/notaSalvaAluno.html"})
 public class NotaServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, String> rotas = new HashMap<>();
-        rotas.put("/index.html", "br.ufjf.dcc168.IndexCommand");    
+        rotas.put("/index.html", "br.ufjf.dcc168.IndexCommand");
+        
         String clazzName = rotas.get(request.getServletPath());
         try {
             Command comando = (Command) Class.forName(clazzName).newInstance();
@@ -48,10 +49,9 @@ public class NotaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, String> rotas = new HashMap<>();
-        rotas.put("/notaSalva.html", "br.ufjf.dcc168.NotaSalvaCommand");    
-       
-        
-    
+        rotas.put("/notaSalva.html", "br.ufjf.dcc168.NotaSalvaCommand");
+        rotas.put("/notaSalvaAluno.html", "br.ufjf.dcc168.NotaSalvaAlunoCommand");
+
         String clazzName = rotas.get(request.getServletPath());
         try {
             Command comando = (Command) Class.forName(clazzName).newInstance();

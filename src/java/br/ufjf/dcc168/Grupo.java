@@ -13,14 +13,29 @@ import java.util.ArrayList;
  */
 public class Grupo {
     private int id;
+    private ArrayList<Aluno> grupo;
+    private String feedback;
+    private double nota;
 
-    public int getId() {
-        return id;
+    public ArrayList<Aluno> getInstace() {
+        if (grupo == null) {
+            grupo = new ArrayList<Aluno>();
+
+//tem q pegar os alunos da turma pra não precisar vailidar se o aluno esta matriculado na turma
+            for(int i = 0 ; i< 5 ; i++){
+                Aluno a = new Aluno("Aluno"+i, i);
+                grupo.add(a);            
+            }
+        }
+        return grupo;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setNotaAlunos(double nota){        
+        for (Aluno aluno : grupo) {
+            aluno.setNovaNota(nota);
+        }
     }
+
 
     public ArrayList<Aluno> getGrupo() {
         return grupo;
@@ -29,20 +44,15 @@ public class Grupo {
     public void setGrupo(ArrayList<Aluno> grupo) {
         this.grupo = grupo;
     }
-    private ArrayList<Aluno> grupo;
-    private String feedback;
-    private double nota;
     
-    public ArrayList<Aluno> getInstace() {
-        if (grupo == null) {
-            grupo = new ArrayList<Aluno>();
-            for(int i = 0 ; i< 5 ; i++){
-                Aluno a = new Aluno("Aluno"+i, i*2.5);
-                grupo.add(a);            
-            }
-        }
-        return grupo;
+    public int getId() {
+        return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     public Grupo() {
     }
@@ -60,9 +70,8 @@ public class Grupo {
     public void setFeedback(String feedback) {
         this.feedback = feedback;
     }
-    public void setNotaAlunos(double nota){        
-        for (Aluno aluno : grupo) {
-            aluno.setNovaNota(nota);
-        }
+
+    void setNotaAluno(double nota, int id) {
+     
     }
 }
