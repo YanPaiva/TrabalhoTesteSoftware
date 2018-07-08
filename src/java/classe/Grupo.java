@@ -68,7 +68,7 @@ public class Grupo {
         return alunos;
     }
 
-    public void setAlunos(Aluno aluno) {
+    public void setAluno(Aluno aluno) {
         this.alunos.add(aluno);
     }
     

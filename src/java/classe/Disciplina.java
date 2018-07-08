@@ -27,7 +27,7 @@ public class Disciplina {
         return instance;
     }
     
-    private Disciplina() {}
+    public Disciplina() {}
  
     public int getIdDisciplinaServidor() {
         return idDisciplinaServidor;
