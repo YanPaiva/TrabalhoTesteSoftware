@@ -8,8 +8,10 @@ package api;
 import classe.Grupo;
 import classe.Aluno;
 import classe.Atividade;
+import classe.Disciplina;
 import dao.AlunoDao;
 import dao.AtividadeDao;
+import dao.DisciplinaDao;
 import dao.GrupoDao;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -24,10 +26,11 @@ import org.json.JSONObject;
  */
 public class JsonReader {
     
+    private static Disciplina DISCIPLINA = Disciplina.getInstance();
     private static String URL = "http://localhost:3000/";
-    private static String URL_GRUPO = URL + "grupos";
-    private static String URL_ATIVIDADE = URL + "atividade";
-    private static String URL_ALUNO = URL + "alunos";
+    private static String URL_GRUPO = URL + "grupos?id_atividade=%d";
+    private static String URL_ATIVIDADE = URL + "atividades/%d";
+    private static String URL_DISCIPLINA = URL + "disciplina/%d";
     
     public static String getText(String url) throws Exception {
         URL website = new URL(url);
@@ -45,56 +48,66 @@ public class JsonReader {
         return response.toString();
     }
 
-    public static void getGrupos() throws Exception{
-        JSONArray jsonArray=new JSONArray(getText(URL_GRUPO)); 
+    public static void getGrupos(int idAtividade) throws Exception{
         GrupoDao grupoDao = GrupoDao.getInstance();
+        AlunoDao alunoDao = AlunoDao.getInstance();
+        JSONObject obj =new JSONObject(String.format(getText(URL_GRUPO), idAtividade)); 
+        JSONArray jsonArray= obj.getJSONArray("grupos"); 
 
         for(int i=0;i<jsonArray.length();i++){
-            JSONObject obj= jsonArray.getJSONObject(i); 
-            int id = obj.getInt("id");
-            String nome = obj.getString("nome");
-            double nota = obj.getDouble("nota");
-            
+            JSONObject grupoObj= jsonArray.getJSONObject(i); 
+
             ArrayList<Aluno> alunos = new ArrayList<>();
-            JSONArray alunosJsonArray= obj.getJSONArray("alunos");
-            
+            JSONArray alunosJsonArray= grupoObj.getJSONArray("alunos");            
             for(int j=0;j<alunosJsonArray.length();j++){
-                JSONObject alunoObj = jsonArray.getJSONObject(j); 
-                int idAluno = alunoObj.getInt("id");
-                String nomeAluno = alunoObj.getString("nome");
-                double notaAluno = alunoObj.getDouble("nota");
-                
-                alunos.add(new Aluno(idAluno, nomeAluno, notaAluno));
+                JSONObject alunoObj = alunosJsonArray.getJSONObject(j);                 
+                alunos.add(alunoDao.buscar(alunoObj.getInt("id")));
             }       
-                      
-            grupoDao.salvar(new Grupo(id, nome, nota, alunos));              
+            
+            Grupo grupo = new Grupo(grupoObj.getInt("id"), idAtividade, grupoObj.getString("nome"), alunos);
+            DISCIPLINA.getAtividade().setGrupos(grupo);
+            
+            if(grupoDao.buscar(grupo.getIdGrupoServidor()) == null){
+               grupoDao.salvar(grupo);              
+            }else{
+               grupoDao.alterar(grupo); 
+            } 
+             
         }
     }
     
-    public static void getAtividade() throws Exception{
+    public static void getAtividade(int idAtividade) throws Exception{
         
-        JSONObject obj =new JSONObject(getText(URL_ATIVIDADE)); 
-        
-        int id = obj.getInt("id");
-        int idDisciplina = obj.getInt("id_disciplina");
-        String disciplina = obj.getString("disciplina");
-        String descricao = obj.getString("descricao");
-
+        JSONObject obj =new JSONObject(String.format(getText(URL_ATIVIDADE), idAtividade)); 
+        DISCIPLINA.setAtividade(new Atividade(obj.getInt("id"), obj.getString("descricao")));
         AtividadeDao atividadeDao = AtividadeDao.getInstance();
-        atividadeDao.salvar(new Atividade(id, idDisciplina, disciplina, descricao));              
+        
+        if(atividadeDao.buscar(DISCIPLINA.getAtividade().getIdAtividadeServidor()) == null){
+            atividadeDao.salvar(DISCIPLINA.getAtividade());              
+        }else{
+            atividadeDao.alterar(DISCIPLINA.getAtividade());
+        }
     }
   
-    public static void getAlunos() throws Exception{
-        JSONArray jsonArray=new JSONArray(getText(URL_ALUNO)); 
+    public static void getDisciplina(int idDisciplina) throws Exception{
+        JSONObject obj = new JSONObject(String.format(getText(URL_DISCIPLINA), idDisciplina)); 
         AlunoDao alunoDao = AlunoDao.getInstance();
-
-        for(int i=0;i<jsonArray.length();i++){
-            JSONObject obj= jsonArray.getJSONObject(i); 
-            int id = obj.getInt("id");
-            String nome = obj.getString("nome");
-            double nota = obj.getDouble("nota");
+        DisciplinaDao disciplinaDao = DisciplinaDao.getInstance();
+        DISCIPLINA.setDisciplina(obj.getString("disciplina"));
+        DISCIPLINA.setIdDisciplinaServidor(idDisciplina);
+        disciplinaDao.salvar(DISCIPLINA);
+        
+        JSONArray alunosJsonArray = obj.getJSONArray("alunos");
+        
+        for(int i=0;i<alunosJsonArray.length();i++){
+            JSONObject alunoObj= alunosJsonArray.getJSONObject(i); 
+            Aluno aluno = new Aluno(alunoObj.getInt("id"), alunoObj.getString("nome"));
             
-            alunoDao.salvar(new Aluno(id, nome, nota));
+             if(alunoDao.buscar(aluno.getIdAlunoServidor()) == null){
+                alunoDao.salvar(aluno);
+             }else{
+                 alunoDao.alterar(aluno);
+             }           
         }
     }
 }

@@ -5,18 +5,28 @@
  */
 package classe;
 
+import java.util.List;
+
 /**
  *
  * @author fernanda
  */
 public class Disciplina {
+    
+    private static Disciplina instance;
     private int idDisciplinaServidor;
     private String disciplina;
-
-    public Disciplina(int idDisciplinaServidor, String disciplina) {
-        this.idDisciplinaServidor = idDisciplinaServidor;
-        this.disciplina = disciplina;
+    private Atividade atividade;
+    private List<Aluno> alunos;
+    
+    public static Disciplina getInstance(){
+        if(instance == null){
+            instance = new Disciplina();
+        }
+        return instance;
     }
+    
+    private Disciplina() {}
  
     public int getIdDisciplinaServidor() {
         return idDisciplinaServidor;
@@ -32,5 +42,25 @@ public class Disciplina {
 
     public void setDisciplina(String disciplina) {
         this.disciplina = disciplina;
+    }
+
+    public Atividade getAtividade() {
+        return atividade;
+    }
+
+    public void setAtividade(Atividade atividade) {
+        this.atividade = atividade;
+    }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
+    
+    public void setAlunos(Aluno aluno) {
+        this.alunos.add(aluno);
     }
 }

@@ -13,40 +13,14 @@ import java.util.List;
  */
 public class Atividade {
     private int idAtividadeServidor;
-    private Disciplina disciplina;
     private String descricao;
     private List<Grupo> grupos;
 
-    public Atividade(int idAtividadeServidor,int idDisciplinaServidor, String disciplina, String descricao) {
+    public Atividade(int idAtividadeServidor, String descricao) {
         this.idAtividadeServidor = idAtividadeServidor;
-        this.disciplina = new Disciplina(idDisciplinaServidor, disciplina);
         this.descricao = descricao;
     }
-
-    public Disciplina getDisciplina() {
-        return disciplina;
-    }
-
-    public void setDisciplina(Disciplina disciplina) {
-        this.disciplina = disciplina;
-    }
-    
-    public int getIdDisciplina() {
-        return disciplina.getIdDisciplinaServidor();
-    }
-
-    public void setIdDisciplina(int idDisciplina) {
-        this.disciplina.setIdDisciplinaServidor(idDisciplina); 
-    }
-    
-    public String getDescricaoDisciplina() {
-        return disciplina.getDisciplina();
-    }
-
-    public void setDescricaoDisciplina(String descricao) {
-        this.disciplina.setDisciplina(descricao);
-    }
-       
+ 
     public int getIdAtividadeServidor() {
         return idAtividadeServidor;
     }
@@ -69,5 +43,9 @@ public class Atividade {
 
     public void setGrupos(List<Grupo> grupos) {
         this.grupos = grupos;
+    }
+    
+    public void setGrupos(Grupo grupo) {
+        this.grupos.add(grupo);
     }
 }

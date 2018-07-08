@@ -4,16 +4,10 @@
     <table border="1">
         <thead>
             <tr>
-                <th>Nota do Grupo</th>
-                <th>Nota de Prova</th>
-                <th>Nota Final</th>
+                <th>Disciplina</th>
+                <th>${disciplina}</th>
+                <th>Atividade</th>
+                <th>${atividade}</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td><a href="index.html">Grupo</a></td>
-                <td>Prova</td>
-                <td>Final</td>
-            </tr>
-        </tbody>
     </table>

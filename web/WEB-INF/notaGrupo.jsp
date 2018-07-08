@@ -9,7 +9,7 @@
                 <td>
                     <select name="cbGrupo">                       
                         <c:forEach var="numeroDoGrupo" items="${todosGrupos}">
-                            <option>${numeroDoGrupo.getId()}</option>
+                            <option>${numeroDoGrupo.getIdGrupoServidor()}</option>
                         </c:forEach>
                     </select>
                 </td>

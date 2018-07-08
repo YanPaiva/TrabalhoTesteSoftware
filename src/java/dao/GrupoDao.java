@@ -8,6 +8,7 @@ package dao;
 
 import classe.Aluno;
 import classe.Grupo;
+import service.NumberFormatService;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,12 +36,37 @@ public class GrupoDao {
         Statement st = null;
         
         try {
-            String sql = "INSERT INTO grupo (id_grupo, id_atividade, nome, nota) " +
-                         "VALUES (%d, %d, '%s', '%s')";
-            sql = String.format(sql, grupo.getIdGrupoServidor(), grupo.getIdAtividadeServidor(), grupo.getNome(),grupo.getNota());
+            String sql = "INSERT INTO grupo (id_grupo, id_atividade, nome, nota) VALUES (%d, %d, '%s', %s)";
+            sql = String.format(sql, grupo.getIdGrupoServidor(), grupo.getIdAtividadeServidor(), grupo.getNome(), NumberFormatService.format(grupo.getNota()));
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
             st.execute(sql);
+            
+            salvarAlunos(grupo.getAlunos() , grupo.getIdGrupoServidor());
+            
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            fecharConexao(conn, st);
+        }
+    }
+    
+    public void salvarAlunos(List<Aluno> alunos , int idGrupo)throws ClassNotFoundException, SQLException{
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();
+            String sql="";
+            
+            for(Aluno aluno : alunos){
+                sql =  sql + String.format("INSERT INTO grupo_aluno (id_grupo, id_aluno) VALUES (%d, %d); ", 
+                                            idGrupo, aluno.getIdAlunoServidor());
+            }
+           
+            st.execute(sql);
+        
         } catch(SQLException e) {
             throw e;
         } finally {
@@ -48,16 +74,36 @@ public class GrupoDao {
         }
     }
 
+    public void alterarAlunos(List<Aluno> alunos , int idGrupo)throws ClassNotFoundException, SQLException{
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();
+            
+            deleteAlunos(idGrupo);
+            salvarAlunos(alunos , idGrupo);
+        
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            fecharConexao(conn, st);
+        }
+    }
+    
     public void alterar(Grupo grupo) throws ClassNotFoundException, SQLException {
         Connection conn = null;
         Statement st = null;
         
         try {
-            String sql = "UPDATE grupo SET id_atividade= %d , nome='%s', nota=%f WHERE id_grupo=%d" ;
-            sql = String.format(sql,grupo.getIdAtividadeServidor(), grupo.getNome(), grupo.getNota(), grupo.getIdGrupoServidor());
+            String sql = "UPDATE grupo SET id_atividade= %d , nome='%s', nota=%s WHERE id_grupo=%d" ;
+            sql = String.format(sql,grupo.getIdAtividadeServidor(), grupo.getNome(), NumberFormatService.format(grupo.getNota()), grupo.getIdGrupoServidor());
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();  
             st.execute(sql);
+            
+            alterarAlunos(grupo.getAlunos(), grupo.getIdGrupoServidor());
                         
         } catch(SQLException e) {
             throw e;
@@ -95,11 +141,11 @@ public class GrupoDao {
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();    
             ResultSet rs = st.executeQuery(sql);
-            rs.next();
-            
-            grupo = new Grupo(idGrupo, rs.getInt("id_atividade"), rs.getString("nome"), rs.getDouble("nota"));
-            grupo.setAlunos(buscarAlunos(idGrupo));
-                        
+            if(rs.next()){
+                grupo = new Grupo(idGrupo, rs.getInt("id_atividade"), rs.getString("nome"), rs.getDouble("nota"));
+                grupo.setAlunos(buscarAlunos(idGrupo)); 
+            }
+       
         } catch(SQLException e) {
             throw e;
         } finally {
@@ -109,13 +155,13 @@ public class GrupoDao {
         return grupo;
     }
     
-    public List<Grupo> buscarTodos() throws ClassNotFoundException, SQLException {
+    public List<Grupo> buscarTodos(int idAtividade) throws ClassNotFoundException, SQLException {
         List<Grupo> grupos = new ArrayList<>();
         Connection conn = null;
         Statement st = null;
         
         try {
-            String query = "SELECT * FROM grupo";
+            String query = String.format("SELECT * FROM grupo WHERE id_atividade=%d", idAtividade);
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
@@ -142,8 +188,8 @@ public class GrupoDao {
         Statement st = null;
         
         try {
-            String sql = "SELECT id_aluno FROM grupo_aluno ga " +
-                         "LEFT JOIN aluno a a.id_aluno = ga.id_aluno " +
+            String sql = "SELECT a.id_aluno AS id_aluno , a.nome AS nome FROM grupo_aluno ga " +
+                         "LEFT JOIN aluno a ON a.id_aluno = ga.id_aluno " +
                          "WHERE ga.id_grupo = %d ";
             sql = String.format(sql, idGrupo);
             conn = DatabaseLocator.getInstance().getConnection();
@@ -151,7 +197,7 @@ public class GrupoDao {
 
             ResultSet rs = st.executeQuery(sql);
             while(rs.next()){
-                Aluno aluno = new Aluno( rs.getInt("id_aluno"), rs.getString("nome"), rs.getDouble("nota"));
+                Aluno aluno = new Aluno( rs.getInt("id_aluno"), rs.getString("nome"));
                 alunos.add(aluno);            
             }
                         
@@ -162,6 +208,24 @@ public class GrupoDao {
         }
         
         return alunos;        
+    }
+    
+    public void deleteAlunos(int idGrupo) throws ClassNotFoundException, SQLException {
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+            String sql = "DELETE * FROM grupo_aluno WHERE id_grupo=%d" ;
+            sql = String.format(sql, idGrupo);
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();
+            st.execute(sql);
+                        
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            fecharConexao(conn, st);
+        }
     }
     
     private void fecharConexao(Connection conn, Statement st) {

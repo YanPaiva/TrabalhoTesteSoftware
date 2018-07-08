@@ -24,12 +24,12 @@ public class Aluno {
         this.nome = nome;
     }
     
-    public int getIdALunoServidor() {
+    public int getIdAlunoServidor() {
         return idAlunoServidor;
     }
 
-    public void setIdALunoServidor(int idALunoServidor) {
-        this.idAlunoServidor = idALunoServidor;
+    public void setIdAlunoServidor(int idAlunoServidor) {
+        this.idAlunoServidor = idAlunoServidor;
     }
 
     public String getNome() {

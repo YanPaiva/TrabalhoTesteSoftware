@@ -6,6 +6,7 @@
 package dao;
 
 import classe.Atividade;
+import classe.Disciplina;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,9 +35,9 @@ public class AtividadeDao {
         
         try {
             
-            String sql = "INSERT INTO atividade (id_atividade, id_disciplina, disciplina, descricao) "
+            String sql = "INSERT INTO atividade (id_atividade, id_disciplina,  descricao) "
                        + "VALUES (%d , %d, '%s' , '%s')";
-            sql = String.format(sql, atividade.getIdAtividadeServidor(), atividade.getIdDisciplina(), atividade.getDescricaoDisciplina(), atividade.getDescricao());
+            sql = String.format(sql, atividade.getIdAtividadeServidor(), Disciplina.getInstance().getIdDisciplinaServidor(), atividade.getDescricao());
             
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
@@ -47,6 +48,26 @@ public class AtividadeDao {
         } finally {
             fecharConexao(conn, st);
         }
+    }
+    
+    public void alterar(Atividade atividade) throws ClassNotFoundException, SQLException {
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+            String sql = "UPDATE atividade SET id_disciplina=%d, descricao='%s' WHERE id_atividade=%d" ;
+            sql = String.format(sql, Disciplina.getInstance().getIdDisciplinaServidor(), atividade.getDescricao(), atividade.getIdAtividadeServidor());
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();
+            st.execute(sql);
+            
+                        
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            fecharConexao(conn, st);
+        }
+        
     }
     
     public Atividade buscar(int idAtividade) throws ClassNotFoundException, SQLException {
@@ -61,9 +82,10 @@ public class AtividadeDao {
             st = conn.createStatement();    
 
             ResultSet rs = st.executeQuery(sql);
-            rs.next();
+            if(rs.next()){
+                atividade = new Atividade(idAtividade, rs.getString("descricao"));
+            }
             
-            atividade = new Atividade(idAtividade,  rs.getInt("id_disciplina"), rs.getString("disiplina"), rs.getString("descricao"));
                         
         } catch(SQLException e) {
             throw e;
@@ -86,7 +108,7 @@ public class AtividadeDao {
             ResultSet rs = st.executeQuery(query);
             
             while(rs.next()){
-                Atividade atividade = new Atividade(rs.getInt("id_atividade"), rs.getInt("id_disciplina"), rs.getString("disciplina"), rs.getString("descricao"));
+                Atividade atividade = new Atividade(rs.getInt("id_atividade"), rs.getString("descricao"));
                 atividades.add(atividade);            
             }
 

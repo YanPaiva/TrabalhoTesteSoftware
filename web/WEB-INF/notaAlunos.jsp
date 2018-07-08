@@ -13,7 +13,7 @@
                 <td> <input type="number" min="0" max="${aluno.getNota(0)}"
                         name="txtNota" value="${aluno.getNota(0)}" size="20" />       
                 </td>
-                <input type="hidden" name="idAluno" value="${aluno.getId()}">
+                <input type="hidden" name="idAluno" value="${aluno.getIdAlunoServidor()}">
                 <input type="hidden" name="cbGrupo" value="${cbGrupo}">
                 <td><input type="submit" value="Salvar"/></td>
 

@@ -8,20 +8,25 @@ create TABLE aluno (
 	PRIMARY KEY (id_aluno)
 );
 
+create TABLE disciplina (
+	id_disciplina  int NOT NULL,
+	disciplina varchar(100) NOT NULL,
+	PRIMARY KEY (id_disciplina)
+);
 
 create TABLE atividade (
 	id_atividade  int NOT NULL,
         id_disciplina int NOT NULL,
-	disciplina varchar(100) NULL,
         descricao varchar(100) NOT NULL,
-	PRIMARY KEY (id_atividade)
+	PRIMARY KEY (id_atividade),
+        FOREIGN KEY (id_disciplina) REFERENCES disciplina(id_disciplina)
 );
 
 create TABLE atividade_aluno (
 	id_atividade  int NOT NULL,
         id_aluno int NOT NULL,
 	nota FLOAT(7,2) NULL,
-	FOREIGN KEY (id_atividade) REFERENCES atividade(id_atividade)
+	FOREIGN KEY (id_atividade) REFERENCES atividade(id_atividade),
         FOREIGN KEY (id_aluno) REFERENCES aluno(id_aluno)
 );
 
@@ -43,6 +48,7 @@ create TABLE grupo_aluno (
  
 
 /*
+drop table disciplina;
 drop table atividade_aluno;
 drop table grupo_aluno;
 drop table aluno;

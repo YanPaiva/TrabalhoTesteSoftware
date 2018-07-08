@@ -34,7 +34,7 @@ public class AlunoDao {
         
         try {
             String sql = "INSERT INTO aluno (id_aluno, nome) VALUES (%d, '%s')";
-            sql = String.format(sql, aluno.getIdALunoServidor(), aluno.getNome());
+            sql = String.format(sql, aluno.getIdAlunoServidor(), aluno.getNome());
      
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
@@ -59,9 +59,9 @@ public class AlunoDao {
             st = conn.createStatement();    
             
             ResultSet rs = st.executeQuery(sql);
-            rs.next();
-            
-            aluno = new Aluno(idAluno, rs.getString("nome"));
+            if(rs.next()){
+                aluno = new Aluno(idAluno, rs.getString("nome"));
+            }       
                         
         } catch(SQLException e) {
             throw e;
@@ -123,6 +123,24 @@ public class AlunoDao {
         }
         
         return alunos;
+    }
+    
+     public void alterar(Aluno aluno) throws ClassNotFoundException, SQLException {
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+            String sql = "UPDATE aluno SET nome='%s'WHERE id_aluno=%d" ;
+            sql = String.format(sql,aluno.getNome(), aluno.getIdAlunoServidor());
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();  
+            st.execute(sql);
+                        
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            fecharConexao(conn, st);
+        }
     }
     
     private void fecharConexao(Connection conn, Statement st) {

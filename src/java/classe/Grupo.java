@@ -32,6 +32,12 @@ public class Grupo {
         this.nota = nota;
     }
     
+    public Grupo(int idGrupoServidor, int idAtividadeServidor, String nome, List<Aluno> alunos) {
+        this.idGrupoServidor = idGrupoServidor;
+        this.idAtividadeServidor = idAtividadeServidor;
+        this.nome = nome;
+    }
+    
     public int getIdGrupoServidor() {
         return idGrupoServidor;
     }
