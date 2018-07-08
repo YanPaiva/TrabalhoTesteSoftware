@@ -6,6 +6,7 @@
 package service;
 
 import api.JsonReader;
+import classe.Disciplina;
 import java.util.logging.Logger;
 
 /**
@@ -18,9 +19,12 @@ public class DisciplinaService {
     public static int DISCIPLINA_ID=15;
     
     public static void lerDadosIniciais(){
+        
+        Disciplina.getInstance().setIdDisciplinaServidor(DISCIPLINA_ID);
+        
         try {
-            JsonReader.getAtividade(ATIVIDADE_ID);
             JsonReader.getDisciplina(DISCIPLINA_ID);
+            JsonReader.getAtividade(ATIVIDADE_ID);
             JsonReader.getGrupos(ATIVIDADE_ID);
         } catch (Exception ex) {
             Logger.getLogger("Erro ao tentar ler json inicial.");
