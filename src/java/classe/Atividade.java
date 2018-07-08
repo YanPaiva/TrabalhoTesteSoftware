@@ -5,6 +5,7 @@
  */
 package classe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
 public class Atividade {
     private int idAtividadeServidor;
     private String descricao;
-    private List<Grupo> grupos;
+    private List<Grupo> grupos = new ArrayList<>();
 
     public Atividade(int idAtividadeServidor, String descricao) {
         this.idAtividadeServidor = idAtividadeServidor;

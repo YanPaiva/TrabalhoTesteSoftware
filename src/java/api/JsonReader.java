@@ -30,7 +30,7 @@ public class JsonReader {
     private static String URL = "http://localhost:3000/";
     private static String URL_GRUPO = URL + "grupos?id_atividade=%d";
     private static String URL_ATIVIDADE = URL + "atividades/%d";
-    private static String URL_DISCIPLINA = URL + "disciplina/%d";
+    private static String URL_DISCIPLINA = URL + "disciplinas/%d";
     
     public static String getText(String url) throws Exception {
         URL website = new URL(url);
@@ -51,12 +51,11 @@ public class JsonReader {
     public static void getGrupos(int idAtividade) throws Exception{
         GrupoDao grupoDao = GrupoDao.getInstance();
         AlunoDao alunoDao = AlunoDao.getInstance();
-        JSONObject obj =new JSONObject(String.format(getText(URL_GRUPO), idAtividade)); 
+        JSONObject obj =new JSONObject(getText(String.format(URL_GRUPO, idAtividade))); 
         JSONArray jsonArray= obj.getJSONArray("grupos"); 
 
         for(int i=0;i<jsonArray.length();i++){
             JSONObject grupoObj= jsonArray.getJSONObject(i); 
-
             ArrayList<Aluno> alunos = new ArrayList<>();
             JSONArray alunosJsonArray= grupoObj.getJSONArray("alunos");            
             for(int j=0;j<alunosJsonArray.length();j++){
@@ -65,20 +64,20 @@ public class JsonReader {
             }       
             
             Grupo grupo = new Grupo(grupoObj.getInt("id"), idAtividade, grupoObj.getString("nome"), alunos);
-            DISCIPLINA.getAtividade().setGrupos(grupo);
             
             if(grupoDao.buscar(grupo.getIdGrupoServidor()) == null){
                grupoDao.salvar(grupo);              
             }else{
                grupoDao.alterar(grupo); 
             } 
-             
+            
+            DISCIPLINA.getAtividade().setGrupos(grupo);
+
         }
     }
     
     public static void getAtividade(int idAtividade) throws Exception{
-        
-        JSONObject obj =new JSONObject(String.format(getText(URL_ATIVIDADE), idAtividade)); 
+        JSONObject obj = new JSONObject(getText(String.format(URL_ATIVIDADE, idAtividade))); 
         DISCIPLINA.setAtividade(new Atividade(obj.getInt("id"), obj.getString("descricao")));
         AtividadeDao atividadeDao = AtividadeDao.getInstance();
         
@@ -90,12 +89,17 @@ public class JsonReader {
     }
   
     public static void getDisciplina(int idDisciplina) throws Exception{
-        JSONObject obj = new JSONObject(String.format(getText(URL_DISCIPLINA), idDisciplina)); 
+        JSONObject obj = new JSONObject(getText(String.format(URL_DISCIPLINA, idDisciplina))); 
         AlunoDao alunoDao = AlunoDao.getInstance();
         DisciplinaDao disciplinaDao = DisciplinaDao.getInstance();
         DISCIPLINA.setDisciplina(obj.getString("disciplina"));
         DISCIPLINA.setIdDisciplinaServidor(idDisciplina);
-        disciplinaDao.salvar(DISCIPLINA);
+        
+        if(disciplinaDao.buscar(idDisciplina)){
+            disciplinaDao.alterar(DISCIPLINA);
+        }else{
+            disciplinaDao.salvar(DISCIPLINA);
+        }
         
         JSONArray alunosJsonArray = obj.getJSONArray("alunos");
         
@@ -103,11 +107,13 @@ public class JsonReader {
             JSONObject alunoObj= alunosJsonArray.getJSONObject(i); 
             Aluno aluno = new Aluno(alunoObj.getInt("id"), alunoObj.getString("nome"));
             
-             if(alunoDao.buscar(aluno.getIdAlunoServidor()) == null){
-                alunoDao.salvar(aluno);
-             }else{
-                 alunoDao.alterar(aluno);
-             }           
+            if(alunoDao.buscar(aluno.getIdAlunoServidor()) == null){
+               alunoDao.salvar(aluno);
+            }else{
+                alunoDao.alterar(aluno);
+            }
+            
+            DISCIPLINA.setAlunos(aluno);
         }
     }
 }

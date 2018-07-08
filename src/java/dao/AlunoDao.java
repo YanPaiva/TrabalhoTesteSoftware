@@ -43,7 +43,7 @@ public class AlunoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
     }
     
@@ -66,7 +66,7 @@ public class AlunoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
         
         return aluno;
@@ -94,7 +94,7 @@ public class AlunoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
         
         return aluno;
@@ -119,7 +119,7 @@ public class AlunoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
         
         return alunos;
@@ -139,17 +139,7 @@ public class AlunoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
     }
-    
-    private void fecharConexao(Connection conn, Statement st) {
-        try {
-            if(st!=null) st.close();
-            if(conn!=null) conn.close();
-
-        } catch(SQLException e) {
-
-        }
-    } 
 }

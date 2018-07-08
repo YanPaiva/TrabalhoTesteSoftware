@@ -1,6 +1,6 @@
 package command;
 
-import api.JsonReader;
+import classe.Disciplina;
 import classe.Grupo;
 import dao.GrupoDao;
 import java.io.IOException;
@@ -22,14 +22,15 @@ public class IndexCommand implements Command {
 
             try {
                 
+                DisciplinaService.lerDadosIniciais();
+                
                 GrupoDao grupoDao = GrupoDao.getInstance();
                 List<Grupo> grupos = grupoDao.buscarTodos(DisciplinaService.ATIVIDADE_ID);
                 
                 RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/notaGrupo.jsp");
                 
-                request.setAttribute("disciplina","Editar Notas");
-                request.setAttribute("atividade","Editar Notas");
-                request.setAttribute("titulo","Editar Notas");
+                request.setAttribute("disciplina",Disciplina.getInstance().getDisciplina());
+                request.setAttribute("atividade",Disciplina.getInstance().getAtividade().getDescricao());
                 request.setAttribute("todosGrupos", grupos);
                 
                 dispachante.forward(request, response);
@@ -40,7 +41,5 @@ public class IndexCommand implements Command {
                 Logger.getLogger(IndexCommand.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-    
-    
+    }    
 }

@@ -8,6 +8,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -36,4 +37,13 @@ public class DatabaseLocator {
         return conn;
     }
     
+    public static void fecharConexao(Connection conn, Statement st) {
+        try {
+            if(st!=null) st.close();
+            if(conn!=null) conn.close();
+
+        } catch(SQLException e) {
+
+        }
+    }   
 }

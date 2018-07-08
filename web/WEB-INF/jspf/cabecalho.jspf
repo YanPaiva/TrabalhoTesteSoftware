@@ -1,13 +1,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE HTML>
-<html>
-    <head>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Disciplina</th>
-                <th>${disciplina}</th>
-                <th>Atividade</th>
-                <th>${atividade}</th>
-            </tr>
-        </thead>
-    </table>
+<html style="background-color:#563d7c;">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+    <div style="background-color:#563d7c;padding-top: 150px">
+        <div class="col-3"></div>
+        <div class="container col-6" style="background-color:white;height:300px">
+            <div class="row justify-content-center"  style="padding-top:20px">
+              <h3>${disciplina}</h3>
+            </div>
+            <div class="row justify-content-center" >
+                <h5>${atividade}</h5>
+            </div>
+        
+    
+
+   

@@ -5,6 +5,7 @@
  */
 package classe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class Disciplina {
     private int idDisciplinaServidor;
     private String disciplina;
     private Atividade atividade;
-    private List<Aluno> alunos;
+    private List<Aluno> alunos = new ArrayList<>();
     
     public static Disciplina getInstance(){
         if(instance == null){

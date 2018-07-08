@@ -36,7 +36,7 @@ public class AtividadeDao {
         try {
             
             String sql = "INSERT INTO atividade (id_atividade, id_disciplina,  descricao) "
-                       + "VALUES (%d , %d, '%s' , '%s')";
+                       + "VALUES (%d , %d , '%s')";
             sql = String.format(sql, atividade.getIdAtividadeServidor(), Disciplina.getInstance().getIdDisciplinaServidor(), atividade.getDescricao());
             
             conn = DatabaseLocator.getInstance().getConnection();
@@ -46,7 +46,7 @@ public class AtividadeDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
     }
     
@@ -65,7 +65,7 @@ public class AtividadeDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
         
     }
@@ -90,7 +90,7 @@ public class AtividadeDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
         
         return atividade;
@@ -115,19 +115,10 @@ public class AtividadeDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
         
         return atividades;
     }
-    
-    private void fecharConexao(Connection conn, Statement st) {
-        try {
-            if(st!=null) st.close();
-            if(conn!=null) conn.close();
 
-        } catch(SQLException e) {
-
-        }
-    } 
 }

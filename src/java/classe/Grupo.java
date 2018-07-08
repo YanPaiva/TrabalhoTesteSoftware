@@ -5,6 +5,7 @@
  */
 package classe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class Grupo {
     private int idAtividadeServidor;
     private String nome;
     private double nota;
-    private List<Aluno> alunos;
+    private List<Aluno> alunos = new ArrayList<>();
     
     public Grupo(int idGrupoServidor, String nome, double nota, List<Aluno> alunos) {
         this.idGrupoServidor = idGrupoServidor;
@@ -35,6 +36,7 @@ public class Grupo {
     public Grupo(int idGrupoServidor, int idAtividadeServidor, String nome, List<Aluno> alunos) {
         this.idGrupoServidor = idGrupoServidor;
         this.idAtividadeServidor = idAtividadeServidor;
+        this.alunos = alunos;
         this.nome = nome;
     }
     
