@@ -1,0 +1,106 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package dao;
+
+import classe.Atividade;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author fernanda
+ */
+public class AtividadeDao {
+    private static AtividadeDao instance;
+    
+    private AtividadeDao(){}
+    
+    public static AtividadeDao getInstance(){
+        if(instance == null)
+            instance = new AtividadeDao();
+        return instance;
+    }
+    
+    public void salvar(Atividade atividade) throws ClassNotFoundException, SQLException{
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();
+            st.execute("insert into atividade (id_atividade, descricao)" +
+                       "values ("+ atividade.getIdAtividadeServidor()+" , '" +atividade.getDescricao()+"')");
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            fecharConexao(conn, st);
+        }
+    }
+    
+    public Atividade buscar(int idAtividade) throws ClassNotFoundException, SQLException {
+        Atividade atividade = null;
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+                       
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();    
+            
+            String query = "select * from atividade where id_atividade= "+idAtividade;
+            ResultSet rs = st.executeQuery(query);
+            rs.next();
+            
+            atividade = new Atividade(idAtividade, rs.getString("descricao"));
+                        
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            fecharConexao(conn, st);
+        }
+        
+        return atividade;
+    }
+    
+    public List<Atividade> buscarTodos() throws ClassNotFoundException, SQLException {
+        List<Atividade> atividades = new ArrayList<>();
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+            String query = "select * from atividade";
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            
+            while(rs.next()){
+                Atividade atividade = new Atividade(rs.getInt("id_atividade"), rs.getString("descricao"));
+                atividades.add(atividade);            
+            }
+
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            fecharConexao(conn, st);
+        }
+        
+        return atividades;
+    }
+    
+    private void fecharConexao(Connection conn, Statement st) {
+        try {
+            if(st!=null) st.close();
+            if(conn!=null) conn.close();
+
+        } catch(SQLException e) {
+
+        }
+    } 
+}

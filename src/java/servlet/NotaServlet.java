@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.ufjf.dcc168;
+package servlet;
 
+import command.Command;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,17 +21,17 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author YanNotebook
  */
-@WebServlet(name = "NotaServlet", urlPatterns = {"/index.html", "/notaSalva.html", "/notaSalvaAluno.html"})
+@WebServlet(name = "NotaServlet", urlPatterns = {"/index.jsp", "/notaSalva.jsp", "/notaSalvaAluno.jsp"})
 public class NotaServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, String> rotas = new HashMap<>();
-        rotas.put("/index.html", "br.ufjf.dcc168.IndexCommand");
+        rotas.put("/index.jsp", "command.IndexCommand");
         
-        String clazzName = rotas.get(request.getServletPath());
+        String className = rotas.get(request.getServletPath());
         try {
-            Command comando = (Command) Class.forName(clazzName).newInstance();
+            Command comando = (Command) Class.forName("command.IndexCommand").newInstance();
             comando.exec(request, response);
         } catch (ClassNotFoundException ex) {
             response.sendError(500, "erro.  " + ex);
@@ -49,8 +47,8 @@ public class NotaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, String> rotas = new HashMap<>();
-        rotas.put("/notaSalva.html", "br.ufjf.dcc168.NotaSalvaCommand");
-        rotas.put("/notaSalvaAluno.html", "br.ufjf.dcc168.NotaSalvaAlunoCommand");
+        rotas.put("/notaSalva.jsp", "command.NotaSalvaCommand");
+        rotas.put("/notaSalvaAluno.jsp", "command.NotaSalvaAlunoCommand");
 
         String clazzName = rotas.get(request.getServletPath());
         try {

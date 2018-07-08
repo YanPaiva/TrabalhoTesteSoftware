@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.ufjf.dcc168;
+package command;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
