@@ -1,0 +1,67 @@
+{
+    
+	"atividade": {
+		"id" : 10,
+		"id_disciplina" : 15,
+		"disciplina" : "Teste de Software",
+		"descricao" : "trabalho 1"
+	},
+  
+    "alunos" : [
+		{
+			"id" : 1,
+			"nome" : "Aline",
+			"nota" : 0
+		},
+
+		{
+			"id" : 2,
+			"nome" : "Fernanda",
+			"nota" : 0
+		},
+
+		{
+			"id_aluno" : 3,
+			"nome" : "Mariana",
+			"nota" : 0
+		},
+
+		{
+			"id" : 4,
+			"nome" : "Yan",
+			"nota" : 0
+		}
+	],
+  	
+  	"grupos" : [
+
+		{ 	"id" : 1,
+			"nome" : "Grupo 1",
+			"nota" : 0,
+			"alunos" : [
+				{
+					"id" : 1
+				},
+
+				{
+					"id" : 2
+				}
+			]
+
+		},
+
+		{ 	"id" : 2,
+			"nome" : "Grupo 2",
+			"nota" : 0,
+			"alunos" : [
+				{
+					"id" : 3
+				},
+
+				{
+					"id" : 4
+				}
+			]
+		}
+	]
+}

@@ -1,5 +1,6 @@
 package command;
 
+import api.JsonReader;
 import dao.GrupoDao;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -15,7 +16,10 @@ public class IndexCommand implements Command {
     @Override
     public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         {
+
             try {
+                lerDadosIniciais(10, 10);
+                
                 GrupoDao grupoDao = GrupoDao.getInstance();
                 RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/notaGrupo.jsp");
                 
@@ -29,6 +33,16 @@ public class IndexCommand implements Command {
             } catch (SQLException ex) {
                 Logger.getLogger(IndexCommand.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+    
+    private void lerDadosIniciais(int idDisciplina, int idAtividade){
+        try {
+            JsonReader.getAtividade();
+            JsonReader.getAlunos();
+            JsonReader.getGrupos();
+        } catch (Exception ex) {
+            Logger.getLogger("Erro ao tentar ler json inicial.");
         }
     }
 }

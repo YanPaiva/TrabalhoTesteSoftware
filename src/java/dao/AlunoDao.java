@@ -33,10 +33,13 @@ public class AlunoDao {
         Statement st = null;
         
         try {
+            String sql = "INSERT INTO aluno (id_aluno, nome) VALUES (%d, '%s')";
+            sql = String.format(sql, aluno.getIdALunoServidor(), aluno.getNome());
+     
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
-            st.execute("insert into aluno (id_aluno, nome, nota)" +
-                       "values ("+ aluno.getIdALunoServidor()+" , '" +aluno.getNome()+"' , " + aluno.getNota() +" )");
+            st.execute(sql);
+            
         } catch(SQLException e) {
             throw e;
         } finally {
@@ -51,11 +54,39 @@ public class AlunoDao {
         
         try {
                        
+            String sql = String.format("SELECT * FROM aluno WHERE id_aluno=%d", idAluno);
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();    
             
-            String query = "select * from aluno where id_aluno= "+idAluno;
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery(sql);
+            rs.next();
+            
+            aluno = new Aluno(idAluno, rs.getString("nome"));
+                        
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            fecharConexao(conn, st);
+        }
+        
+        return aluno;
+    }
+    
+    public Aluno buscar(int idAluno, int idAtividade) throws ClassNotFoundException, SQLException {
+        Aluno aluno = null;
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+                       
+            String sql = "SELECT * FROM aluno a"
+                       + "LEFT JOIN atividade_aluno aa ON a.id_aluno = aa.id_aluno"
+                       + "WHERE a.id_aluno=%d AND aa.id_atividade=%d"; 
+            sql = String.format(sql, idAluno, idAtividade);
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();    
+            
+            ResultSet rs = st.executeQuery(sql);
             rs.next();
             
             aluno = new Aluno(idAluno, rs.getString("nome"), rs.getDouble("nota"));
@@ -75,7 +106,7 @@ public class AlunoDao {
         Statement st = null;
         
         try {
-            String query = "select * from aluno";
+            String query = "SELECT * FROM aluno";
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);

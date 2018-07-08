@@ -35,11 +35,12 @@ public class GrupoDao {
         Statement st = null;
         
         try {
+            String sql = "INSERT INTO grupo (id_grupo, id_atividade, nome, nota) " +
+                         "VALUES (%d, %d, '%s', '%s')";
+            sql = String.format(sql, grupo.getIdGrupoServidor(), grupo.getIdAtividadeServidor(), grupo.getNome(),grupo.getNota());
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
-            st.execute("insert into grupo (id_grupo, id_atividade, nome, nota)" +
-                       "values ("+ grupo.getIdGrupoServidor()+" , " +grupo.getIdAtividadeServidor()+" , "
-                               + "'" + grupo.getNome() + "', " + grupo.getNota() +" )");
+            st.execute(sql);
         } catch(SQLException e) {
             throw e;
         } finally {
@@ -52,11 +53,11 @@ public class GrupoDao {
         Statement st = null;
         
         try {
+            String sql = "UPDATE grupo SET id_atividade= %d , nome='%s', nota=%f WHERE id_grupo=%d" ;
+            sql = String.format(sql,grupo.getIdAtividadeServidor(), grupo.getNome(), grupo.getNota(), grupo.getIdGrupoServidor());
             conn = DatabaseLocator.getInstance().getConnection();
-            st = conn.createStatement();
-            st.execute("update grupo set id_atividade=" +grupo.getIdAtividadeServidor()+" , "
-                               + " nome='" + grupo.getNome() + "', nota=" + grupo.getNota() 
-                               + " where id_grupo="+ grupo.getIdGrupoServidor());
+            st = conn.createStatement();  
+            st.execute(sql);
                         
         } catch(SQLException e) {
             throw e;
@@ -70,10 +71,11 @@ public class GrupoDao {
         Statement st = null;
         
         try {
+            String sql = "UPDATE grupo SET nota=%f WHERE id_grupo=%d" ;
+            sql = String.format(sql, nota, idGrupo);
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
-            st.execute("update grupo set nota=" + nota 
-                               + " where id_grupo="+ idGrupo);
+            st.execute(sql);
                         
         } catch(SQLException e) {
             throw e;
@@ -88,12 +90,11 @@ public class GrupoDao {
         Statement st = null;
         
         try {
-                       
+                      
+            String sql = String.format("SELECT * FROM grupo WHERE id_grupo=%d", idGrupo);
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();    
-            
-            String query = "select * from grupo where id_grupo= "+idGrupo;
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery(sql);
             rs.next();
             
             grupo = new Grupo(idGrupo, rs.getInt("id_atividade"), rs.getString("nome"), rs.getDouble("nota"));
@@ -114,7 +115,7 @@ public class GrupoDao {
         Statement st = null;
         
         try {
-            String query = "select * from grupo";
+            String query = "SELECT * FROM grupo";
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
@@ -141,14 +142,14 @@ public class GrupoDao {
         Statement st = null;
         
         try {
-                       
+            String sql = "SELECT id_aluno FROM grupo_aluno ga " +
+                         "LEFT JOIN aluno a a.id_aluno = ga.id_aluno " +
+                         "WHERE ga.id_grupo = %d ";
+            sql = String.format(sql, idGrupo);
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();    
-            
-            String query = "select id_aluno from grupo_aluno ga " 
-                          +"left join aluno a a.id_aluno = ga.id_aluno "
-                          +"where ga.id_grupo= "+idGrupo ;
-            ResultSet rs = st.executeQuery(query);
+
+            ResultSet rs = st.executeQuery(sql);
             while(rs.next()){
                 Aluno aluno = new Aluno( rs.getInt("id_aluno"), rs.getString("nome"), rs.getDouble("nota"));
                 alunos.add(aluno);            

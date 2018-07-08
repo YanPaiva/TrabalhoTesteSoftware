@@ -33,10 +33,15 @@ public class AtividadeDao {
         Statement st = null;
         
         try {
+            
+            String sql = "INSERT INTO atividade (id_atividade, id_disciplina, disciplina, descricao) "
+                       + "VALUES (%d , %d, '%s' , '%s')";
+            sql = String.format(sql, atividade.getIdAtividadeServidor(), atividade.getIdDisciplina(), atividade.getDescricaoDisciplina(), atividade.getDescricao());
+            
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
-            st.execute("insert into atividade (id_atividade, descricao)" +
-                       "values ("+ atividade.getIdAtividadeServidor()+" , '" +atividade.getDescricao()+"')");
+            st.execute(sql);
+        
         } catch(SQLException e) {
             throw e;
         } finally {
@@ -51,14 +56,14 @@ public class AtividadeDao {
         
         try {
                        
+            String sql = String.format("SELECT * FROM atividade WHERE id_atividade=%d", idAtividade);
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();    
-            
-            String query = "select * from atividade where id_atividade= "+idAtividade;
-            ResultSet rs = st.executeQuery(query);
+
+            ResultSet rs = st.executeQuery(sql);
             rs.next();
             
-            atividade = new Atividade(idAtividade, rs.getString("descricao"));
+            atividade = new Atividade(idAtividade,  rs.getInt("id_disciplina"), rs.getString("disiplina"), rs.getString("descricao"));
                         
         } catch(SQLException e) {
             throw e;
@@ -75,13 +80,13 @@ public class AtividadeDao {
         Statement st = null;
         
         try {
-            String query = "select * from atividade";
+            String query = "SELECT * FROM atividade";
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
             
             while(rs.next()){
-                Atividade atividade = new Atividade(rs.getInt("id_atividade"), rs.getString("descricao"));
+                Atividade atividade = new Atividade(rs.getInt("id_atividade"), rs.getInt("id_disciplina"), rs.getString("disciplina"), rs.getString("descricao"));
                 atividades.add(atividade);            
             }
 

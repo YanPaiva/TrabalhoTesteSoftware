@@ -19,6 +19,11 @@ public class Aluno {
         this.nota = nota;
     }
     
+    public Aluno(int idAlunoServidor, String nome) {
+        this.idAlunoServidor = idAlunoServidor;
+        this.nome = nome;
+    }
+    
     public int getIdALunoServidor() {
         return idAlunoServidor;
     }
