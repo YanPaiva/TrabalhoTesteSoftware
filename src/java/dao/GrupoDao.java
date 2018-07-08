@@ -8,7 +8,6 @@ package dao;
 
 import classe.Aluno;
 import classe.Grupo;
-import service.NumberFormatService;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,7 +36,7 @@ public class GrupoDao {
         
         try {
             String sql = "INSERT INTO grupo (id_grupo, id_atividade, nome, nota) VALUES (%d, %d, '%s', %s)";
-            sql = String.format(sql, grupo.getIdGrupoServidor(), grupo.getIdAtividadeServidor(), grupo.getNome(), NumberFormatService.format(grupo.getNota()));
+            sql = String.format(sql, grupo.getIdGrupoServidor(), grupo.getIdAtividadeServidor(), grupo.getNome(), grupo.getNota());
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
             st.execute(sql);
@@ -47,7 +46,7 @@ public class GrupoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
     }
     
@@ -58,19 +57,18 @@ public class GrupoDao {
         try {
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
-            String sql="";
             
             for(Aluno aluno : alunos){
-                sql =  sql + String.format("INSERT INTO grupo_aluno (id_grupo, id_aluno) VALUES (%d, %d); ", 
+                String sql =  String.format("INSERT INTO grupo_aluno (id_grupo, id_aluno) VALUES (%d, %d); ", 
                                             idGrupo, aluno.getIdAlunoServidor());
+                st.execute(sql);
+
             }
-           
-            st.execute(sql);
-        
+
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
     }
 
@@ -88,7 +86,7 @@ public class GrupoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
     }
     
@@ -98,7 +96,7 @@ public class GrupoDao {
         
         try {
             String sql = "UPDATE grupo SET id_atividade= %d , nome='%s', nota=%s WHERE id_grupo=%d" ;
-            sql = String.format(sql,grupo.getIdAtividadeServidor(), grupo.getNome(), NumberFormatService.format(grupo.getNota()), grupo.getIdGrupoServidor());
+            sql = String.format(sql,grupo.getIdAtividadeServidor(), grupo.getNome(), grupo.getNota(), grupo.getIdGrupoServidor());
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();  
             st.execute(sql);
@@ -108,7 +106,7 @@ public class GrupoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
     }
     
@@ -126,7 +124,7 @@ public class GrupoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
     }
     
@@ -149,7 +147,7 @@ public class GrupoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
         
         return grupo;
@@ -176,7 +174,7 @@ public class GrupoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
         
         return grupos;
@@ -204,7 +202,7 @@ public class GrupoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+           DatabaseLocator.fecharConexao(conn, st);
         }
         
         return alunos;        
@@ -215,7 +213,7 @@ public class GrupoDao {
         Statement st = null;
         
         try {
-            String sql = "DELETE * FROM grupo_aluno WHERE id_grupo=%d" ;
+            String sql = "DELETE FROM grupo_aluno WHERE id_grupo=%d" ;
             sql = String.format(sql, idGrupo);
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
@@ -224,18 +222,8 @@ public class GrupoDao {
         } catch(SQLException e) {
             throw e;
         } finally {
-            fecharConexao(conn, st);
+            DatabaseLocator.fecharConexao(conn, st);
         }
     }
-    
-    private void fecharConexao(Connection conn, Statement st) {
-        try {
-            if(st!=null) st.close();
-            if(conn!=null) conn.close();
-
-        } catch(SQLException e) {
-
-        }
-    } 
 }
 
