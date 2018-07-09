@@ -27,10 +27,10 @@ public class IndexCommand implements Command {
                 GrupoDao grupoDao = GrupoDao.getInstance();
                 List<Grupo> grupos = grupoDao.buscarTodos(DisciplinaService.ATIVIDADE_ID);
                 
-                RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/notaGrupo.jsp");
+                RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/index.jsp");
                 
                 request.setAttribute("disciplina",Disciplina.getInstance().getDisciplina());
-                request.setAttribute("atividade",Disciplina.getInstance().getAtividade().getDescricao());
+                //request.setAttribute("atividade",Disciplina.getInstance().getAtividade().getDescricao());
                 request.setAttribute("todosGrupos", grupos);
                 
                 dispachante.forward(request, response);
