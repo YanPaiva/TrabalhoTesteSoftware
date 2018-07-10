@@ -29,7 +29,7 @@ public class Servlet extends HttpServlet {
             Command comando = (Command) Class.forName("command.IndexCommand").newInstance();
             comando.exec(request, response);
         }catch (Exception ex) {
-            Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+             Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
 

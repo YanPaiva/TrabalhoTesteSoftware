@@ -17,6 +17,7 @@ import java.util.logging.Logger;
  */
 public class InitialService {
  
+    public static boolean CONFIGURAR=true;
     public static int ATIVIDADE_ID=10;
     public static int DISCIPLINA_ID=15;
     public static Map<String, String> ROTAS = new HashMap<>();
@@ -32,10 +33,13 @@ public class InitialService {
         } catch (Exception ex) {
             Logger.getLogger("Erro ao tentar ler json inicial.");
         }
+        
+        CONFIGURAR=false;
     }
     
     public static void configuracoesIniciais(){   
         ROTAS.put("/notaSalva.jsp", "command.NotaSalvaCommand");
         ROTAS.put("/notaSalvaAluno.jsp", "command.NotaSalvaAlunoCommand");
+        ROTAS.put("/index.jsp", "command.IndexCommand");
     }
 }
