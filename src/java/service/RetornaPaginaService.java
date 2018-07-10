@@ -5,8 +5,6 @@
  */
 package service;
 
-import classe.Aluno;
-import classe.Disciplina;
 import classe.Grupo;
 import dao.GrupoDao;
 import java.io.IOException;
@@ -44,7 +42,7 @@ public class RetornaPaginaService {
         String idGrupoString = request.getParameter("cbGrupo");
         int idGrupo = 0;
         
-        if(idGrupoString != null)
+        if(idGrupoString != null && !idGrupoString.isEmpty())
             idGrupo = Integer.parseInt(idGrupoString);
         else
             idGrupo = -1;
@@ -61,7 +59,7 @@ public class RetornaPaginaService {
             if(idGrupo > 0){
                 GrupoDao grupoDao = GrupoDao.getInstance();
                 Grupo grupo = grupoDao.buscar(idGrupo);
-                List<Aluno> alunos = grupo.getAlunos();
+                request.setAttribute("alunos", grupo.getAlunos());
                 request.setAttribute("nota", grupo.getNota());
             }
           

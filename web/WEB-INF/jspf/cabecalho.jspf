@@ -5,9 +5,9 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
-    <div style="background-color:#563d7c;padding-top: 150px">
+    <div style="background-color:#563d7c;padding-top: 50px">
         <div class="col-3"></div>
-        <div class="container col-6" style="background-color:white;height:300px">
+        <div class="container col-6" style="background-color:white;">
             <div class="row justify-content-center"  style="padding-top:20px">
               <h1>${disciplina}</h1>
             </div>

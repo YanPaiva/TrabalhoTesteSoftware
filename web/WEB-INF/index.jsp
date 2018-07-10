@@ -3,9 +3,9 @@
 <%@include file="jspf/cabecalho.jspf" %>
 
 <form method="POST" action="index.jsp" id="formNota">
-    <div class="row justify-content-center align-items-center" style="padding-top:30px;">
-        <div class="col-2">Grupo</div>
-        <div class="col-10">
+    <div style="padding-top:30px;">Grupo</div>
+    <div class="row" >
+        <div class="col-12">
             <select name="cbGrupo" class="custom-select" required >         
                 <option></option>
                 <c:forEach var="grupo" items="${todosGrupos}">
@@ -14,16 +14,35 @@
             </select>
         </div>
     </div>
-    <div class="row justify-content-center align-items-center" style="padding-top:5px;">
-        <div class="col-2">Nota</div>
-        <div class="col-10">
+    <div class="row" style="padding-top:10px;">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Alunos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="aluno" items="${alunos}">
+                        <tr>
+                            <td>${aluno.getNome()}</td>
+                          </tr>
+                    </c:forEach>
+                </tbody>
+              </table>
+        </div>
+    </div>
+    <div style="padding-top:10px;">Nota</div>
+    <div class="row">
+        <div class="col-12">
             <input class="form-control" required type="number" step="0.01" name="txtNota" value="${nota}" size="20" min="0" max="100"/>
         </div>
     </div>
-    <div class="row" style="padding-top:15px;">
-        <div class="col-10"></div>
-        <div class="col-2">
-            <input class="btn btn-primary" type="submit" name="btnSalvar" value="Salvar" />
+    <div class="row" style="padding-top:15px;padding-bottom:10px">
+        <div class="col-6"></div>
+        <div class="col-6">
+            <a href="notaAlunos?id=${idGrupo}" class="btn btn-outline-warning"  role="button">Editar notas individuais</a>
+            <input class="btn btn-outline-success" type="submit" name="btnSalvar" value="Salvar" />
         </div>
     </div>
 </form>

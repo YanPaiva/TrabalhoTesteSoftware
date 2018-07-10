@@ -11,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class NotaSalvaAlunoCommand implements Command {
+public class NotaAlunoCommand implements Command {
 
     @Override
     public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,9 +34,9 @@ public class NotaSalvaAlunoCommand implements Command {
                 dispachante.forward(request, response);
             
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(NotaSalvaAlunoCommand.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NotaAlunoCommand.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
-                Logger.getLogger(NotaSalvaAlunoCommand.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NotaAlunoCommand.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }

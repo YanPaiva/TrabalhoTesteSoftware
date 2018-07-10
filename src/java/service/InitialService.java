@@ -38,8 +38,7 @@ public class InitialService {
     }
     
     public static void configuracoesIniciais(){   
-        ROTAS.put("/notaSalva.jsp", "command.NotaSalvaCommand");
-        ROTAS.put("/notaSalvaAluno.jsp", "command.NotaSalvaAlunoCommand");
+        ROTAS.put("/notaAluno.jsp", "command.NotaAlunoCommand");
         ROTAS.put("/index.jsp", "command.IndexCommand");
     }
 }
