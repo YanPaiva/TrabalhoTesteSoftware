@@ -12,7 +12,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import service.DisciplinaService;
+import service.InitialService;
 
 public class IndexCommand implements Command {
     
@@ -21,16 +21,15 @@ public class IndexCommand implements Command {
         {
 
             try {
-                
-                DisciplinaService.lerDadosIniciais();
+                InitialService.lerDadosIniciais();
+                InitialService.configuracoesIniciais();
                 
                 GrupoDao grupoDao = GrupoDao.getInstance();
-                List<Grupo> grupos = grupoDao.buscarTodos(DisciplinaService.ATIVIDADE_ID);
+                List<Grupo> grupos = grupoDao.buscarTodos(InitialService.ATIVIDADE_ID);
                 
                 RequestDispatcher dispachante = request.getRequestDispatcher("/WEB-INF/index.jsp");
-                
                 request.setAttribute("disciplina",Disciplina.getInstance().getDisciplina());
-                //request.setAttribute("atividade",Disciplina.getInstance().getAtividade().getDescricao());
+                request.setAttribute("atividade",Disciplina.getInstance().getAtividade().getDescricao());
                 request.setAttribute("todosGrupos", grupos);
                 
                 dispachante.forward(request, response);
@@ -41,5 +40,5 @@ public class IndexCommand implements Command {
                 Logger.getLogger(IndexCommand.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }    
+    }  
 }

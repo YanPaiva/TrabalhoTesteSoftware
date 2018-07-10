@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import service.FormatarNumeroService;
 /**
  *
  * @author YanNotebook
@@ -35,8 +36,8 @@ public class GrupoDao {
         Statement st = null;
         
         try {
-            String sql = "INSERT INTO grupo (id_grupo, id_atividade, nome, nota) VALUES (%d, %d, '%s', %s)";
-            sql = String.format(sql, grupo.getIdGrupoServidor(), grupo.getIdAtividadeServidor(), grupo.getNome(), grupo.getNota());
+            String sql = "INSERT INTO grupo (id_grupo, id_atividade, nome, nota) VALUES (%d, %d, '%s', %.2f)";
+            sql = String.format(sql, grupo.getIdGrupoServidor(), grupo.getIdAtividadeServidor(), grupo.getNome(),  String.valueOf(grupo.getNota()));
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
             st.execute(sql);
@@ -95,8 +96,8 @@ public class GrupoDao {
         Statement st = null;
         
         try {
-            String sql = "UPDATE grupo SET id_atividade= %d , nome='%s', nota=%s WHERE id_grupo=%d" ;
-            sql = String.format(sql,grupo.getIdAtividadeServidor(), grupo.getNome(), grupo.getNota(), grupo.getIdGrupoServidor());
+            String sql = "UPDATE grupo SET id_atividade= %d , nome='%s', nota=%.2f WHERE id_grupo=%d" ;
+            sql = String.format(sql,grupo.getIdAtividadeServidor(), grupo.getNome(), String.valueOf(grupo.getNota()), grupo.getIdGrupoServidor());
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();  
             st.execute(sql);
@@ -115,8 +116,8 @@ public class GrupoDao {
         Statement st = null;
         
         try {
-            String sql = "UPDATE grupo SET nota=%f WHERE id_grupo=%d" ;
-            sql = String.format(sql, nota, idGrupo);
+            String sql = "UPDATE grupo SET nota=%s WHERE id_grupo=%d" ;           
+            sql = String.format(sql, String.valueOf(nota), idGrupo);  
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();
             st.execute(sql);

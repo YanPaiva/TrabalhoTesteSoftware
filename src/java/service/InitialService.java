@@ -7,16 +7,19 @@ package service;
 
 import api.JsonReader;
 import classe.Disciplina;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
  *
  * @author fernanda
  */
-public class DisciplinaService {
+public class InitialService {
  
     public static int ATIVIDADE_ID=10;
     public static int DISCIPLINA_ID=15;
+    public static Map<String, String> ROTAS = new HashMap<>();
     
     public static void lerDadosIniciais(){
         
@@ -31,4 +34,8 @@ public class DisciplinaService {
         }
     }
     
+    public static void configuracoesIniciais(){   
+        ROTAS.put("/notaSalva.jsp", "command.NotaSalvaCommand");
+        ROTAS.put("/notaSalvaAluno.jsp", "command.NotaSalvaAlunoCommand");
+    }
 }
