@@ -35,7 +35,9 @@ public class Servlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String className = ROTAS.get(request.getServletPath());
+
         try {
             Command comando = (Command) Class.forName(className).newInstance();
             comando.exec(request, response);

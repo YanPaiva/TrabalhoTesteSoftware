@@ -41,7 +41,7 @@
     <div class="row" style="padding-top:15px;padding-bottom:10px">
         <div class="col-6"></div>
         <div class="col-6">
-            <a href="notaAlunos?id=${idGrupo}" class="btn btn-outline-warning"  role="button">Editar notas individuais</a>
+            <a href="Servlet?action=editarNotas&id=${idGrupo}">Editar notas individuais</a>
             <input class="btn btn-outline-success" type="submit" name="btnSalvar" value="Salvar" />
         </div>
     </div>

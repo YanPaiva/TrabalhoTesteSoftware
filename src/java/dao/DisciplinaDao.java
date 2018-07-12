@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -87,6 +89,37 @@ public class DisciplinaDao {
         } finally {
             DatabaseLocator.fecharConexao(conn, st);
         }
+    }
+    
+    public void dropAlll() throws ClassNotFoundException, SQLException{
+        try {
+                
+            dropTable("atividade_aluno");
+            dropTable("grupo_aluno");
+            dropTable("aluno");
+            dropTable("grupo");
+            dropTable("atividade");
+            dropTable("disciplina");
         
+        } catch (SQLException ex) {
+            Logger.getLogger(DisciplinaDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+    }
+    
+    public void dropTable(String table) throws ClassNotFoundException, SQLException{
+        Connection conn = null;
+        Statement st = null;
+        
+         try {
+            String sql = String.format("drop table %s", table);
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();
+            st.execute(sql);
+         } catch(SQLException e) {
+            throw e;
+        } finally {
+            DatabaseLocator.fecharConexao(conn, st);
+        }
     }
 }

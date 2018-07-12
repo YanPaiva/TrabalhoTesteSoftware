@@ -14,12 +14,19 @@ import dao.AtividadeDao;
 import dao.DisciplinaDao;
 import dao.GrupoDao;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import service.InitialService;
 /**
  *
  * @author fernanda
@@ -49,9 +56,11 @@ public class JsonReader {
     }
 
     public static void getGrupos(int idAtividade) throws Exception{
+       
+        JSONObject obj = new JSONObject(getText(String.format(URL_GRUPO, idAtividade)));
+        
         GrupoDao grupoDao = GrupoDao.getInstance();
         AlunoDao alunoDao = AlunoDao.getInstance();
-        JSONObject obj =new JSONObject(getText(String.format(URL_GRUPO, idAtividade))); 
         JSONArray jsonArray= obj.getJSONArray("grupos"); 
 
         for(int i=0;i<jsonArray.length();i++){
@@ -77,10 +86,12 @@ public class JsonReader {
     }
     
     public static void getAtividade(int idAtividade) throws Exception{
-        JSONObject obj = new JSONObject(getText(String.format(URL_ATIVIDADE, idAtividade))); 
-        DISCIPLINA.setAtividade(new Atividade(obj.getInt("id"), obj.getString("descricao")));
-        AtividadeDao atividadeDao = AtividadeDao.getInstance();
         
+        AtividadeDao atividadeDao = AtividadeDao.getInstance();
+        JSONObject obj = new JSONObject(getText(String.format(URL_ATIVIDADE, idAtividade)));
+ 
+        DISCIPLINA.setAtividade(new Atividade(idAtividade, obj.getString("descricao")));
+ 
         if(atividadeDao.buscar(DISCIPLINA.getAtividade().getIdAtividadeServidor()) == null){
             atividadeDao.salvar(DISCIPLINA.getAtividade());              
         }else{
@@ -89,9 +100,11 @@ public class JsonReader {
     }
   
     public static void getDisciplina(int idDisciplina) throws Exception{
-        JSONObject obj = new JSONObject(getText(String.format(URL_DISCIPLINA, idDisciplina))); 
+    
         AlunoDao alunoDao = AlunoDao.getInstance();
         DisciplinaDao disciplinaDao = DisciplinaDao.getInstance();
+        JSONObject obj = new JSONObject(getText(String.format(URL_DISCIPLINA, idDisciplina)));
+        
         DISCIPLINA.setDisciplina(obj.getString("disciplina"));
         DISCIPLINA.setIdDisciplinaServidor(idDisciplina);
         
@@ -116,4 +129,5 @@ public class JsonReader {
             DISCIPLINA.setAlunos(aluno);
         }
     }
+  
 }

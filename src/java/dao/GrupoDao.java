@@ -51,6 +51,26 @@ public class GrupoDao {
         }
     }
     
+    public void salvarSemNota(Grupo grupo) throws ClassNotFoundException, SQLException{
+        Connection conn = null;
+        Statement st = null;
+        
+        try {
+            String sql = "INSERT INTO grupo (id_grupo, id_atividade, nome) VALUES (%d, %d, '%s')";
+            sql = String.format(sql, grupo.getIdGrupoServidor(), grupo.getIdAtividadeServidor(), grupo.getNome());
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();
+            st.execute(sql);
+            
+            salvarAlunos(grupo.getAlunos() , grupo.getIdGrupoServidor());
+            
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            DatabaseLocator.fecharConexao(conn, st);
+        }
+    }
+    
     public void salvarAlunos(List<Aluno> alunos , int idGrupo)throws ClassNotFoundException, SQLException{
         Connection conn = null;
         Statement st = null;

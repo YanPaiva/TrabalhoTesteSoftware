@@ -19,12 +19,10 @@ public class IndexCommand implements Command {
     @Override
     public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         {
-            if(InitialService.CONFIGURAR){
-                InitialService.lerDadosIniciais();
-                InitialService.configuracoesIniciais();
-            }
 
             try {
+                
+                configuracoes();
                 
                 RetornaPaginaService retornaPaginaService = new RetornaPaginaService(request, response);
                 GrupoDao grupoDao = GrupoDao.getInstance();
@@ -45,8 +43,32 @@ public class IndexCommand implements Command {
                 Logger.getLogger(IndexCommand.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
                 Logger.getLogger(IndexCommand.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(IndexCommand.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }  
+    
+    private void configuracoes(){
+        try{
+            
+            if(InitialService.CONFIGURAR){
+                if(InitialService.LER_ARQ_LOCAL){
+                    InitialService intialService = new InitialService(); 
+                    intialService.getDisciplina(InitialService.DISCIPLINA_ID);
+                    intialService.getAtividade(InitialService.ATIVIDADE_ID);
+                    intialService.getGrupos(InitialService.ATIVIDADE_ID);
+
+                }else{
+                    InitialService.lerDadosIniciais();
+                }
+
+                InitialService.configuracoesIniciais();   
+            }
+        
+        } catch (Exception ex) {
+            Logger.getLogger(IndexCommand.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 }
