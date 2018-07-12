@@ -30,8 +30,10 @@ public class IndexCommand implements Command {
                 String atividade = Disciplina.getInstance().getAtividade().getDescricao();
                 String disciplina = Disciplina.getInstance().getDisciplina();
                 int idGrupo = retornaPaginaService.retornaIdGrupo();
-                                 
-                if(request.getParameter("btnSalvar") == null){
+                     
+                if(request.getParameter("btnEditarNotas") != null){
+                    retornaPaginaService.RetornaNotaAluno(idGrupo);
+                }else if(request.getParameter("btnSalvar") == null){
                     retornaPaginaService.RetornaIndex(disciplina, atividade, grupos, idGrupo);
                 }else{
                     double nota =  Double.parseDouble(request.getParameter("txtNota"));
@@ -53,18 +55,18 @@ public class IndexCommand implements Command {
         try{
             
             if(InitialService.CONFIGURAR){
-                if(InitialService.LER_ARQ_LOCAL){
-                    InitialService intialService = new InitialService(); 
-                    intialService.getDisciplina(InitialService.DISCIPLINA_ID);
-                    intialService.getAtividade(InitialService.ATIVIDADE_ID);
-                    intialService.getGrupos(InitialService.ATIVIDADE_ID);
-
-                }else{
-                    InitialService.lerDadosIniciais();
-                }
-
                 InitialService.configuracoesIniciais();   
-            }
+            } 
+            
+            if(InitialService.LER_ARQ_LOCAL){
+                InitialService intialService = new InitialService(); 
+                intialService.getDisciplina(InitialService.DISCIPLINA_ID);
+                intialService.getAtividade(InitialService.ATIVIDADE_ID);
+                intialService.getGrupos(InitialService.ATIVIDADE_ID);
+
+            }else{
+                InitialService.lerDadosIniciais();
+            }   
         
         } catch (Exception ex) {
             Logger.getLogger(IndexCommand.class.getName()).log(Level.SEVERE, null, ex);

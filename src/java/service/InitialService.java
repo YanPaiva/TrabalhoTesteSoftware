@@ -14,8 +14,6 @@ import dao.AlunoDao;
 import dao.AtividadeDao;
 import dao.DisciplinaDao;
 import dao.GrupoDao;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +31,6 @@ public class InitialService {
     public static int ATIVIDADE_ID=10;
     public static int DISCIPLINA_ID=15;
     public static Map<String, String> ROTAS = new HashMap<>();
-    private Reader reader = new InputStreamReader(getClass().getResourceAsStream(NAME_ARQ_LOCAL));
         
     public InitialService(){}
     
@@ -48,12 +45,14 @@ public class InitialService {
             Logger.getLogger("Erro ao tentar ler json inicial.");
         }
         
-        CONFIGURAR=false;
+        
     }
     
     public static void configuracoesIniciais(){   
         ROTAS.put("/notaAluno.jsp", "command.NotaAlunoCommand");
         ROTAS.put("/index.jsp", "command.IndexCommand");
+        
+        CONFIGURAR=false;
     }    
     
     public void getGrupos(int idAtividade) throws Exception{

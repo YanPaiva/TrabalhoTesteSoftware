@@ -14,20 +14,31 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import service.InitialService;
 import static service.InitialService.ROTAS;
 
 /**
  *
  * @author YanNotebook
  */
-@WebServlet(name = "Servlet", urlPatterns = {"/index.jsp", "/notaSalva.jsp", "/notaSalvaAluno.jsp"})
+@WebServlet(name = "Servlet", urlPatterns = {"/index.jsp", "/notaSalva.jsp", "/notaAluno.jsp"})
 public class Servlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {      
+               
         try {
-            Command comando = (Command) Class.forName("command.IndexCommand").newInstance();
+            if(InitialService.CONFIGURAR){
+                InitialService.configuracoesIniciais();
+            }
+                        
+            String className = request.getServletPath();
+           
+            String idGrupoString = request.getParameter("cbGrupo");
+            
+            Command comando = (Command) Class.forName(ROTAS.get(className)).newInstance();
             comando.exec(request, response);
+            
         }catch (Exception ex) {
              Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
         } 
@@ -35,12 +46,16 @@ public class Servlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        String className = ROTAS.get(request.getServletPath());
-
+    
         try {
-            Command comando = (Command) Class.forName(className).newInstance();
+            
+            if(InitialService.CONFIGURAR){
+                InitialService.configuracoesIniciais();
+            }
+            
+            Command comando = (Command) Class.forName(ROTAS.get(request.getServletPath())).newInstance();
             comando.exec(request, response);
+            
         } catch (Exception ex) {
             Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
         } 

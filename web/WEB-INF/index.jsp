@@ -19,7 +19,7 @@
             <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Alunos</th>
+                    <th>Aluno</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -41,7 +41,7 @@
     <div class="row" style="padding-top:15px;padding-bottom:10px">
         <div class="col-6"></div>
         <div class="col-6">
-            <a href="Servlet?action=editarNotas&id=${idGrupo}">Editar notas individuais</a>
+            <input class="btn btn-outline-success" type="submit" name="btnEditarNotas" value="Editar Notas Individuais" />
             <input class="btn btn-outline-success" type="submit" name="btnSalvar" value="Salvar" />
         </div>
     </div>

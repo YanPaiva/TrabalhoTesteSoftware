@@ -73,5 +73,26 @@ public class RetornaPaginaService {
             Logger.getLogger(RetornaPaginaService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
+    public void RetornaNotaAluno(int idGrupo) 
+            throws ClassNotFoundException, SQLException{
+        try {
+           
+            RequestDispatcher dispachante = request.getRequestDispatcher(CAMINHO + "notaAluno.jsp");
+            
+            GrupoDao grupoDao = GrupoDao.getInstance();
+            Grupo grupo = grupoDao.buscar(idGrupo);
+            request.setAttribute("alunos", grupo.getAlunos());          
+            request.setAttribute("idGrupo", idGrupo);
+            
+            dispachante.forward(request, response);
+
+        } catch (ServletException ex) {
+            Logger.getLogger(RetornaPaginaService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RetornaPaginaService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
    
 }
