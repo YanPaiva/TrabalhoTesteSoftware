@@ -46,6 +46,8 @@ public class AlunoDao {
             DatabaseLocator.fecharConexao(conn, st);
         }
     }
+
+    
     
     public Aluno buscar(int idAluno) throws ClassNotFoundException, SQLException {
         Aluno aluno = null;
@@ -79,17 +81,18 @@ public class AlunoDao {
         
         try {
                        
-            String sql = "SELECT * FROM aluno a"
-                       + "LEFT JOIN atividade_aluno aa ON a.id_aluno = aa.id_aluno"
+            String sql = "SELECT a.nome AS nome, aa.nota AS nota FROM aluno a "
+                       + "LEFT JOIN atividade_aluno aa ON a.id_aluno = aa.id_aluno "
                        + "WHERE a.id_aluno=%d AND aa.id_atividade=%d"; 
             sql = String.format(sql, idAluno, idAtividade);
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();    
             
             ResultSet rs = st.executeQuery(sql);
-            rs.next();
+            if(rs.next()){
+                aluno = new Aluno(idAluno, rs.getString("nome"), rs.getDouble("nota"));
+            }
             
-            aluno = new Aluno(idAluno, rs.getString("nome"), rs.getDouble("nota"));
                         
         } catch(SQLException e) {
             throw e;
@@ -125,13 +128,59 @@ public class AlunoDao {
         return alunos;
     }
     
-     public void alterar(Aluno aluno) throws ClassNotFoundException, SQLException {
+    public void alterar(Aluno aluno) throws ClassNotFoundException, SQLException {
         Connection conn = null;
         Statement st = null;
         
         try {
-            String sql = "UPDATE aluno SET nome='%s'WHERE id_aluno=%d" ;
+            String sql = "UPDATE aluno SET nome='%s' WHERE id_aluno=%d" ;
             sql = String.format(sql,aluno.getNome(), aluno.getIdAlunoServidor());
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();  
+            st.execute(sql);
+                        
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            DatabaseLocator.fecharConexao(conn, st);
+        }
+    }
+
+    
+    public void atualizaNota(Aluno aluno, int idAtividade) throws ClassNotFoundException, SQLException {
+        
+        if(buscar(aluno.getIdAlunoServidor(), idAtividade) != null){
+            alterarNota(aluno, idAtividade);
+        }else{
+            insereNota(aluno, idAtividade);
+        }
+    }
+     
+    public void alterarNota(Aluno aluno, int idAtividade) throws ClassNotFoundException, SQLException {
+        Connection conn = null;
+        Statement st = null;
+        
+        try {            
+            String sql = "UPDATE atividade_aluno SET nota=%s WHERE id_aluno=%d && id_atividade=%d" ;
+            sql = String.format(sql, String.valueOf(aluno.getNota()), aluno.getIdAlunoServidor(), idAtividade);
+            conn = DatabaseLocator.getInstance().getConnection();
+            st = conn.createStatement();  
+            st.execute(sql);
+                        
+        } catch(SQLException e) {
+            throw e;
+        } finally {
+            DatabaseLocator.fecharConexao(conn, st);
+        }
+    } 
+    
+    public void insereNota(Aluno aluno, int idAtividade) throws ClassNotFoundException, SQLException {
+        Connection conn = null;
+        Statement st = null;
+        
+        try {            
+            String sql = "INSERT INTO atividade_aluno (nota, id_aluno, id_atividade) VALUES (%s, %d, %d)" ;
+            sql = String.format(sql, String.valueOf(aluno.getNota()), aluno.getIdAlunoServidor(), idAtividade);
             conn = DatabaseLocator.getInstance().getConnection();
             st = conn.createStatement();  
             st.execute(sql);

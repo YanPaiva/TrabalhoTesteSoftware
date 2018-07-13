@@ -26,39 +26,35 @@ public class Servlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {      
-               
-        try {
-            if(InitialService.CONFIGURAR){
-                InitialService.configuracoesIniciais();
-            }
-                        
-            String className = request.getServletPath();
-           
-            String idGrupoString = request.getParameter("cbGrupo");
-            
-            Command comando = (Command) Class.forName(ROTAS.get(className)).newInstance();
-            comando.exec(request, response);
-            
-        }catch (Exception ex) {
-             Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+                
+        configuraComando(request, response);        
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    
+        
+        configuraComando(request, response);
+    }
+
+    private void configuraComando(HttpServletRequest request, HttpServletResponse response){
         try {
+            boolean EDITAR = (request.getParameter("btnEditarNotas") != null);
+            String className = request.getServletPath();
             
             if(InitialService.CONFIGURAR){
                 InitialService.configuracoesIniciais();
             }
+                    
+            if(EDITAR){
+                className = "/notaAluno.jsp";
+            }
             
-            Command comando = (Command) Class.forName(ROTAS.get(request.getServletPath())).newInstance();
+            Command comando = (Command) Class.forName(ROTAS.get(className)).newInstance();
             comando.exec(request, response);
             
         } catch (Exception ex) {
             Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
-
+    
 }

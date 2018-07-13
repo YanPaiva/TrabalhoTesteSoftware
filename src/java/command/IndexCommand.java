@@ -16,6 +16,9 @@ import service.RetornaPaginaService;
 
 public class IndexCommand implements Command {
     
+    private boolean EDITAR;
+    private boolean SALVAR;
+    
     @Override
     public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         {
@@ -24,22 +27,8 @@ public class IndexCommand implements Command {
                 
                 configuracoes();
                 
-                RetornaPaginaService retornaPaginaService = new RetornaPaginaService(request, response);
-                GrupoDao grupoDao = GrupoDao.getInstance();
-                List<Grupo> grupos = grupoDao.buscarTodos(InitialService.ATIVIDADE_ID);
-                String atividade = Disciplina.getInstance().getAtividade().getDescricao();
-                String disciplina = Disciplina.getInstance().getDisciplina();
-                int idGrupo = retornaPaginaService.retornaIdGrupo();
-                     
-                if(request.getParameter("btnEditarNotas") != null){
-                    retornaPaginaService.RetornaNotaAluno(idGrupo);
-                }else if(request.getParameter("btnSalvar") == null){
-                    retornaPaginaService.RetornaIndex(disciplina, atividade, grupos, idGrupo);
-                }else{
-                    double nota =  Double.parseDouble(request.getParameter("txtNota"));
-                    grupoDao.alterar(idGrupo, nota);   
-                }
-                
+                RetornaPaginaService retornaPaginaService = new RetornaPaginaService(request, response);                
+                retornaPaginaService.retornaIndex();
             
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(IndexCommand.class.getName()).log(Level.SEVERE, null, ex);

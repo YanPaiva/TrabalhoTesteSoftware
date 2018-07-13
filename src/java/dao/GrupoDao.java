@@ -207,8 +207,11 @@ public class GrupoDao {
         Statement st = null;
         
         try {
-            String sql = "SELECT a.id_aluno AS id_aluno , a.nome AS nome FROM grupo_aluno ga " +
+            String sql = "SELECT a.id_aluno AS id_aluno , a.nome AS nome, at.nota AS nota "
+                       + "FROM grupo_aluno ga " +
                          "LEFT JOIN aluno a ON a.id_aluno = ga.id_aluno " +
+                         "LEFT JOIN grupo g ON g.id_grupo = ga.id_grupo " +
+                         "LEFT JOIN atividade_aluno at ON at.id_aluno = a.id_aluno " +
                          "WHERE ga.id_grupo = %d ";
             sql = String.format(sql, idGrupo);
             conn = DatabaseLocator.getInstance().getConnection();
@@ -216,7 +219,7 @@ public class GrupoDao {
 
             ResultSet rs = st.executeQuery(sql);
             while(rs.next()){
-                Aluno aluno = new Aluno( rs.getInt("id_aluno"), rs.getString("nome"));
+                Aluno aluno = new Aluno(rs.getInt("id_aluno"), rs.getString("nome"), rs.getDouble("nota"));
                 alunos.add(aluno);            
             }
                         
