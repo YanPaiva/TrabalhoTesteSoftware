@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GrupoDao.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;TrabalhoFinalTeste&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">dao</a> &gt; <span class="el_source">GrupoDao.java</span></div><h1>GrupoDao.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package dao;
+
+
+import classe.Aluno;
+import classe.Grupo;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import service.ValidarNumeroService;
+/**
+ *
+ * @author YanNotebook
+ */
+public class GrupoDao {  
+
+    private static GrupoDao instance;
+    
+<span class="fc" id="L26">    private GrupoDao(){}</span>
+    
+    public static GrupoDao getInstance(){
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if(instance == null)</span>
+<span class="fc" id="L30">            instance = new GrupoDao();</span>
+<span class="fc" id="L31">        return instance;</span>
+    }
+    
+    public void salvar(Grupo grupo) throws ClassNotFoundException, SQLException{
+<span class="fc" id="L35">        Connection conn = null;</span>
+<span class="fc" id="L36">        Statement st = null;</span>
+        
+        try {
+<span class="fc" id="L39">            String sql = &quot;INSERT INTO grupo (id_grupo, id_atividade, nome, nota) VALUES (%d, %d, '%s', %.2f)&quot;;</span>
+<span class="nc" id="L40">            sql = String.format(sql, grupo.getIdGrupoServidor(), grupo.getIdAtividadeServidor(), grupo.getNome(),  String.valueOf(grupo.getNota()));</span>
+<span class="nc" id="L41">            conn = DatabaseLocator.getInstance().getConnection();</span>
+<span class="nc" id="L42">            st = conn.createStatement();</span>
+<span class="nc" id="L43">            st.execute(sql);</span>
+            
+<span class="nc" id="L45">            salvarAlunos(grupo.getAlunos() , grupo.getIdGrupoServidor());</span>
+            
+<span class="nc" id="L47">        } catch(SQLException e) {</span>
+<span class="nc" id="L48">            throw e;</span>
+        } finally {
+<span class="pc" id="L50">            DatabaseLocator.fecharConexao(conn, st);</span>
+<span class="nc" id="L51">        }</span>
+<span class="nc" id="L52">    }</span>
+    
+    public void salvarSemNota(Grupo grupo) throws ClassNotFoundException, SQLException{
+<span class="fc" id="L55">        Connection conn = null;</span>
+<span class="fc" id="L56">        Statement st = null;</span>
+        
+        try {
+<span class="fc" id="L59">            String sql = &quot;INSERT INTO grupo (id_grupo, id_atividade, nome) VALUES (%d, %d, '%s')&quot;;</span>
+<span class="fc" id="L60">            sql = String.format(sql, grupo.getIdGrupoServidor(), grupo.getIdAtividadeServidor(), grupo.getNome());</span>
+<span class="fc" id="L61">            conn = DatabaseLocator.getInstance().getConnection();</span>
+<span class="fc" id="L62">            st = conn.createStatement();</span>
+<span class="nc" id="L63">            st.execute(sql);</span>
+            
+<span class="nc" id="L65">            salvarAlunos(grupo.getAlunos() , grupo.getIdGrupoServidor());</span>
+            
+<span class="fc" id="L67">        } catch(SQLException e) {</span>
+<span class="fc" id="L68">            throw e;</span>
+        } finally {
+<span class="pc" id="L70">            DatabaseLocator.fecharConexao(conn, st);</span>
+<span class="nc" id="L71">        }</span>
+<span class="nc" id="L72">    }</span>
+    
+    public void salvarAlunos(List&lt;Aluno&gt; alunos , int idGrupo)throws ClassNotFoundException, SQLException{
+<span class="fc" id="L75">        Connection conn = null;</span>
+<span class="fc" id="L76">        Statement st = null;</span>
+        
+        try {
+<span class="fc" id="L79">            conn = DatabaseLocator.getInstance().getConnection();</span>
+<span class="fc" id="L80">            st = conn.createStatement();</span>
+            
+<span class="nc bnc" id="L82" title="All 2 branches missed.">            for(Aluno aluno : alunos){</span>
+<span class="nc" id="L83">                String sql =  String.format(&quot;INSERT INTO grupo_aluno (id_grupo, id_aluno) VALUES (%d, %d); &quot;, </span>
+<span class="nc" id="L84">                                            idGrupo, aluno.getIdAlunoServidor());</span>
+<span class="nc" id="L85">                st.execute(sql);</span>
+
+<span class="nc" id="L87">            }</span>
+
+<span class="nc" id="L89">        } catch(SQLException e) {</span>
+<span class="nc" id="L90">            throw e;</span>
+        } finally {
+<span class="pc" id="L92">            DatabaseLocator.fecharConexao(conn, st);</span>
+<span class="nc" id="L93">        }</span>
+<span class="nc" id="L94">    }</span>
+
+    public void alterarAlunos(List&lt;Aluno&gt; alunos , int idGrupo)throws ClassNotFoundException, SQLException{
+<span class="fc" id="L97">        Connection conn = null;</span>
+<span class="fc" id="L98">        Statement st = null;</span>
+        
+        try {
+<span class="fc" id="L101">            conn = DatabaseLocator.getInstance().getConnection();</span>
+<span class="fc" id="L102">            st = conn.createStatement();</span>
+            
+<span class="fc" id="L104">            deleteAlunos(idGrupo);</span>
+<span class="nc" id="L105">            salvarAlunos(alunos , idGrupo);</span>
+        
+<span class="nc" id="L107">        } catch(SQLException e) {</span>
+<span class="nc" id="L108">            throw e;</span>
+        } finally {
+<span class="pc" id="L110">            DatabaseLocator.fecharConexao(conn, st);</span>
+<span class="nc" id="L111">        }</span>
+<span class="nc" id="L112">    }</span>
+    
+    public void alterar(Grupo grupo) throws ClassNotFoundException, SQLException {
+<span class="fc" id="L115">        Connection conn = null;</span>
+<span class="fc" id="L116">        Statement st = null;</span>
+        
+        try {
+<span class="fc" id="L119">            String sql = &quot;UPDATE grupo SET id_atividade= %d , nome='%s', nota=%.2f WHERE id_grupo=%d&quot; ;</span>
+<span class="nc" id="L120">            sql = String.format(sql,grupo.getIdAtividadeServidor(), grupo.getNome(), String.valueOf(grupo.getNota()), grupo.getIdGrupoServidor());</span>
+<span class="nc" id="L121">            conn = DatabaseLocator.getInstance().getConnection();</span>
+<span class="nc" id="L122">            st = conn.createStatement();  </span>
+<span class="nc" id="L123">            st.execute(sql);</span>
+            
+<span class="nc" id="L125">            alterarAlunos(grupo.getAlunos(), grupo.getIdGrupoServidor());</span>
+                        
+<span class="nc" id="L127">        } catch(SQLException e) {</span>
+<span class="nc" id="L128">            throw e;</span>
+        } finally {
+<span class="pc" id="L130">            DatabaseLocator.fecharConexao(conn, st);</span>
+<span class="nc" id="L131">        }</span>
+<span class="nc" id="L132">    }</span>
+    
+    public void alterar(int idGrupo, double nota) throws ClassNotFoundException, SQLException {
+<span class="fc" id="L135">        Connection conn = null;</span>
+<span class="fc" id="L136">        Statement st = null;</span>
+        
+        try {
+<span class="fc" id="L139">            String sql = &quot;UPDATE grupo SET nota=%s WHERE id_grupo=%d&quot; ;           </span>
+<span class="fc" id="L140">            sql = String.format(sql, String.valueOf(nota), idGrupo);  </span>
+<span class="fc" id="L141">            conn = DatabaseLocator.getInstance().getConnection();</span>
+<span class="fc" id="L142">            st = conn.createStatement();</span>
+<span class="fc" id="L143">            st.execute(sql);</span>
+                        
+<span class="nc" id="L145">        } catch(SQLException e) {</span>
+<span class="nc" id="L146">            throw e;</span>
+        } finally {
+<span class="pc" id="L148">            DatabaseLocator.fecharConexao(conn, st);</span>
+<span class="fc" id="L149">        }</span>
+<span class="fc" id="L150">    }</span>
+    
+    public Grupo buscar(int idGrupo) throws ClassNotFoundException, SQLException {
+<span class="fc" id="L153">        Grupo grupo = null;</span>
+<span class="fc" id="L154">        Connection conn = null;</span>
+<span class="fc" id="L155">        Statement st = null;</span>
+        
+        try {
+                      
+<span class="fc" id="L159">            String sql = String.format(&quot;SELECT * FROM grupo WHERE id_grupo=%d&quot;, idGrupo);</span>
+<span class="fc" id="L160">            conn = DatabaseLocator.getInstance().getConnection();</span>
+<span class="fc" id="L161">            st = conn.createStatement();    </span>
+<span class="fc" id="L162">            ResultSet rs = st.executeQuery(sql);</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">            if(rs.next()){</span>
+<span class="nc" id="L164">                grupo = new Grupo(idGrupo, rs.getInt(&quot;id_atividade&quot;), rs.getString(&quot;nome&quot;), rs.getDouble(&quot;nota&quot;));</span>
+<span class="nc" id="L165">                grupo.setAlunos(buscarAlunos(idGrupo)); </span>
+            }
+       
+<span class="nc" id="L168">        } catch(SQLException e) {</span>
+<span class="nc" id="L169">            throw e;</span>
+        } finally {
+<span class="pc" id="L171">            DatabaseLocator.fecharConexao(conn, st);</span>
+<span class="fc" id="L172">        }</span>
+        
+<span class="fc" id="L174">        return grupo;</span>
+    }
+    
+    public List&lt;Grupo&gt; buscarTodos(int idAtividade) throws ClassNotFoundException, SQLException {
+<span class="fc" id="L178">        List&lt;Grupo&gt; grupos = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L179">        Connection conn = null;</span>
+<span class="fc" id="L180">        Statement st = null;</span>
+        
+        try {
+<span class="fc" id="L183">            String query = String.format(&quot;SELECT * FROM grupo WHERE id_atividade=%d&quot;, idAtividade);</span>
+<span class="fc" id="L184">            conn = DatabaseLocator.getInstance().getConnection();</span>
+<span class="fc" id="L185">            st = conn.createStatement();</span>
+<span class="fc" id="L186">            ResultSet rs = st.executeQuery(query);</span>
+            
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">            while(rs.next()){</span>
+<span class="nc" id="L189">                int idGrupo = rs.getInt(&quot;id_grupo&quot;);</span>
+<span class="nc" id="L190">                Grupo grupo = new Grupo(idGrupo, rs.getInt(&quot;id_atividade&quot;), rs.getString(&quot;nome&quot;), rs.getDouble(&quot;nota&quot;));</span>
+<span class="nc" id="L191">                grupo.setAlunos(buscarAlunos(idGrupo));</span>
+<span class="nc" id="L192">                grupos.add(grupo);            </span>
+<span class="nc" id="L193">            }</span>
+
+<span class="nc" id="L195">        } catch(SQLException e) {</span>
+<span class="nc" id="L196">            throw e;</span>
+        } finally {
+<span class="pc" id="L198">            DatabaseLocator.fecharConexao(conn, st);</span>
+<span class="fc" id="L199">        }</span>
+        
+<span class="fc" id="L201">        return grupos;</span>
+    }
+
+    public List&lt;Aluno&gt; buscarAlunos(int idGrupo)throws ClassNotFoundException, SQLException {
+<span class="fc" id="L205">        List&lt;Aluno&gt; alunos =  new ArrayList&lt;&gt;();;</span>
+<span class="fc" id="L206">        Connection conn = null;</span>
+<span class="fc" id="L207">        Statement st = null;</span>
+        
+        try {
+<span class="fc" id="L210">            String sql = &quot;SELECT a.id_aluno AS id_aluno , a.nome AS nome FROM grupo_aluno ga &quot; +</span>
+                         &quot;LEFT JOIN aluno a ON a.id_aluno = ga.id_aluno &quot; +
+                         &quot;WHERE ga.id_grupo = %d &quot;;
+<span class="fc" id="L213">            sql = String.format(sql, idGrupo);</span>
+<span class="fc" id="L214">            conn = DatabaseLocator.getInstance().getConnection();</span>
+<span class="fc" id="L215">            st = conn.createStatement();    </span>
+
+<span class="fc" id="L217">            ResultSet rs = st.executeQuery(sql);</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">            while(rs.next()){</span>
+<span class="nc" id="L219">                Aluno aluno = new Aluno( rs.getInt(&quot;id_aluno&quot;), rs.getString(&quot;nome&quot;));</span>
+<span class="nc" id="L220">                alunos.add(aluno);            </span>
+<span class="nc" id="L221">            }</span>
+                        
+<span class="nc" id="L223">        } catch(SQLException e) {</span>
+<span class="nc" id="L224">            throw e;</span>
+        } finally {
+<span class="pc" id="L226">           DatabaseLocator.fecharConexao(conn, st);</span>
+<span class="fc" id="L227">        }</span>
+        
+<span class="fc" id="L229">        return alunos;        </span>
+    }
+    
+    public void deleteAlunos(int idGrupo) throws ClassNotFoundException, SQLException {
+<span class="fc" id="L233">        Connection conn = null;</span>
+<span class="fc" id="L234">        Statement st = null;</span>
+        
+        try {
+<span class="fc" id="L237">            String sql = &quot;DELETE FROM grupo_aluno WHERE id_grupo=%d&quot; ;</span>
+<span class="fc" id="L238">            sql = String.format(sql, idGrupo);</span>
+<span class="fc" id="L239">            conn = DatabaseLocator.getInstance().getConnection();</span>
+<span class="fc" id="L240">            st = conn.createStatement();</span>
+<span class="fc" id="L241">            st.execute(sql);</span>
+                        
+<span class="nc" id="L243">        } catch(SQLException e) {</span>
+<span class="nc" id="L244">            throw e;</span>
+        } finally {
+<span class="pc" id="L246">            DatabaseLocator.fecharConexao(conn, st);</span>
+<span class="fc" id="L247">        }</span>
+<span class="fc" id="L248">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

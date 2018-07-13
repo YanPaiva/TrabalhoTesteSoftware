@@ -20,7 +20,7 @@ import java.util.List;
 public class AlunoDao {
     private static AlunoDao instance;
     
-    private AlunoDao(){}
+    public AlunoDao(){}
     
     public static AlunoDao getInstance(){
         if(instance == null)
