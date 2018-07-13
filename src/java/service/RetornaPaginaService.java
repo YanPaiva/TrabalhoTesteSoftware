@@ -97,7 +97,6 @@ public class RetornaPaginaService {
             if(SALVAR){
                 double nota =  Double.parseDouble(request.getParameter("txtNota"));
                 grupoDao.alterar(idGrupo, nota);
-                return;
             }
             
             
