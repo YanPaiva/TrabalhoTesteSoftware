@@ -6,11 +6,10 @@
 package dao;
 
 import classe.Atividade;
+import static dao.Dados.ATIVIDADE;
+import static dao.Dados.ATIVIDADE_ALT;
+import static dao.Dados.ATIVIDADE_DAO;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,7 +18,7 @@ import static org.junit.Assert.*;
  * @author marit
  */
 public class AtividadeDaoTest {
-    
+     
     /**
      * Teste do metodo getInstance da classe AtividadeDao.
      */
@@ -34,9 +33,8 @@ public class AtividadeDaoTest {
      */
     @Test
     public void testSalvar() throws Exception {
-        Atividade atividade = new Atividade(1,"atividade 1");
-        AtividadeDao instance = new AtividadeDao();
-        instance.salvar(atividade);
+       if(ATIVIDADE_DAO.buscar(ATIVIDADE.getIdAtividadeServidor()) == null)
+            ATIVIDADE_DAO.salvar(ATIVIDADE);
     }
 
     /**
@@ -44,9 +42,7 @@ public class AtividadeDaoTest {
      */
     @Test
     public void testAlterar() throws Exception {
-        Atividade atividade = new Atividade(1,"atividade 2");
-        AtividadeDao instance = AtividadeDao.getInstance();
-        instance.alterar(atividade);
+        ATIVIDADE_DAO.alterar(ATIVIDADE_ALT);
     }
 
     /**
@@ -54,11 +50,8 @@ public class AtividadeDaoTest {
      */
     @Test
     public void testBuscar() throws Exception {
-        int idAtividade = 1;
-        AtividadeDao instance = AtividadeDao.getInstance();
-        Atividade expResult = new Atividade(1,"atividade 1");
-        Atividade result = instance.buscar(idAtividade);
-        assertEquals(expResult, result);
+        Atividade result = ATIVIDADE_DAO.buscar(ATIVIDADE.getIdAtividadeServidor());
+        assertEquals(ATIVIDADE_ALT.getDescricao(), result.getDescricao());
     }
 
     /**
@@ -66,8 +59,7 @@ public class AtividadeDaoTest {
      */
     @Test
     public void testBuscarTodos() throws Exception {
-        AtividadeDao instance = new AtividadeDao();
-        List<Atividade> result = instance.buscarTodos();
+        List<Atividade> result = ATIVIDADE_DAO.buscarTodos();
         assertNotNull(result);
     }
     

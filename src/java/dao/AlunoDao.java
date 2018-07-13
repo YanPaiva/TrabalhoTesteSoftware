@@ -20,7 +20,7 @@ import java.util.List;
 public class AlunoDao {
     private static AlunoDao instance;
     
-    public AlunoDao(){}
+    private AlunoDao(){}
     
     public static AlunoDao getInstance(){
         if(instance == null)
@@ -46,8 +46,6 @@ public class AlunoDao {
             DatabaseLocator.fecharConexao(conn, st);
         }
     }
-
-    
     
     public Aluno buscar(int idAluno) throws ClassNotFoundException, SQLException {
         Aluno aluno = null;
@@ -115,7 +113,7 @@ public class AlunoDao {
             ResultSet rs = st.executeQuery(query);
             
             while(rs.next()){
-                Aluno aluno = new Aluno(rs.getInt("id_aluno"), rs.getString("nome"), rs.getDouble("nota"));
+                Aluno aluno = new Aluno(rs.getInt("id_aluno"), rs.getString("nome"));
                 alunos.add(aluno);            
             }
 

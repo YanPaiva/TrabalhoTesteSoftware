@@ -7,6 +7,13 @@ package dao;
 
 import classe.Aluno;
 import classe.Grupo;
+import static dao.Dados.ALUNOS;
+import static dao.Dados.ALUNO_3;
+import static dao.Dados.ATIVIDADE_ID;
+import static dao.Dados.GRUPO;
+import static dao.Dados.GRUPO_DAO;
+import static dao.Dados.GRUPO_SEM_NOTA;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -17,13 +24,12 @@ import static org.junit.Assert.*;
  */
 public class GrupoDaoTest {
     
-    /**
+        /**
      * Teste do metodo getInstance da classe GrupoDao.
      */
     @Test
     public void testGetInstance() {
-        GrupoDao result = GrupoDao.getInstance();
-        assertNotNull(result);
+        assertNotNull(GRUPO_DAO);
     }
 
     /**
@@ -31,9 +37,12 @@ public class GrupoDaoTest {
      */
     @Test
     public void testSalvar() throws Exception {
-        Grupo grupo = new Grupo(8,8,"Grupo 8",8.00);
-        GrupoDao instance = GrupoDao.getInstance();
-        instance.salvar(grupo);
+        
+        if(GRUPO_DAO.buscar(GRUPO.getIdGrupoServidor())== null){
+            GRUPO_DAO.salvar(GRUPO);
+        }else{
+            GRUPO_DAO.alterar(GRUPO);
+        }
     }
 
     /**
@@ -41,11 +50,12 @@ public class GrupoDaoTest {
      */
     @Test
     public void testSalvarSemNota() throws Exception {
-        List<Aluno> alunos = null;
-        Aluno aluno = new Aluno(8,"Ana",6.00);
-        Grupo grupo = new Grupo(1,1,"Grupo 7",alunos);
-        GrupoDao instance = GrupoDao.getInstance();
-        instance.salvarSemNota(grupo);
+     
+        if(GRUPO_DAO.buscar(GRUPO_SEM_NOTA.getIdGrupoServidor())== null){
+            GRUPO_DAO.salvarSemNota(GRUPO_SEM_NOTA);
+        }else{
+            GRUPO_DAO.alterar(GRUPO_SEM_NOTA);
+        }
     }
 
     /**
@@ -53,12 +63,10 @@ public class GrupoDaoTest {
      */
     @Test
     public void testSalvarAlunos() throws Exception {
-        List<Aluno> alunos = null;
-        Aluno aluno = new Aluno(6,"Carol",10.00);
-        alunos.add(aluno);
-        int idGrupo = 1;
-        GrupoDao instance = GrupoDao.getInstance();
-        instance.salvarAlunos(alunos, idGrupo);
+        List<Aluno> alunos = new ArrayList<>();
+        alunos.add(ALUNO_3);
+
+        GRUPO_DAO.salvarAlunos(alunos, GRUPO_SEM_NOTA.getIdGrupoServidor());
     }
 
     /**
@@ -66,10 +74,9 @@ public class GrupoDaoTest {
      */
     @Test
     public void testAlterarAlunos() throws Exception {
-        List<Aluno> alunos = null;
-        int idGrupo = 0;
-        GrupoDao instance = GrupoDao.getInstance();
-        instance.alterarAlunos(alunos, idGrupo);
+        List<Aluno> alunos = new ArrayList<>();
+        alunos.add(ALUNO_3);
+        GRUPO_DAO.alterarAlunos(alunos, GRUPO.getIdGrupoServidor());
     }
 
     /**
@@ -77,42 +84,44 @@ public class GrupoDaoTest {
      */
     @Test
     public void testAlterar_Grupo() throws Exception {
-        Grupo grupo = new Grupo(2,3,"grupo 6", 90.0);
-        GrupoDao instance = GrupoDao.getInstance();
-        instance.alterar(grupo);
+        GRUPO_SEM_NOTA.setNota(90);
+        GRUPO_DAO.alterar(GRUPO_SEM_NOTA);
     }
 
+        /**
+     * Teste do metodo buscar da classe GrupoDao.
+     */
+    @Test
+    public void testBuscar() throws Exception {
+        Grupo result = GRUPO_DAO.buscar(GRUPO.getIdGrupoServidor());
+        
+        if(result != null){
+            boolean id = (GRUPO.getIdGrupoServidor() == result.getIdGrupoServidor());
+            boolean atividade = (GRUPO.getIdAtividadeServidor()== result.getIdAtividadeServidor());
+            boolean nota = (GRUPO.getNota()== result.getNota());
+            boolean nome = (GRUPO.getNome().equals(result.getNome()));
+
+            assertTrue(id && atividade && nota && nome);
+        }
+ 
+    }
+    
     /**
      * Teste do metodo alterar da classe GrupoDao.
      */
     @Test
     public void testAlterar_int_double() throws Exception {
-        int idGrupo = 0;
-        double nota = 10.0;
-        GrupoDao instance = GrupoDao.getInstance();
-        instance.alterar(idGrupo, nota);
+        GRUPO_DAO.alterar(GRUPO.getIdGrupoServidor(), 8);
     }
 
-    /**
-     * Teste do metodo buscar da classe GrupoDao.
-     */
-    @Test
-    public void testBuscar() throws Exception {
-        int idGrupo = 2;
-        GrupoDao instance = GrupoDao.getInstance();
-        Grupo grupo = new Grupo(2,3,"grupo 6", 90.0);
-        Grupo result = instance.buscar(idGrupo);
-        assertEquals(grupo, result);
-    }
+
 
     /**
      * Teste do metodo buscarTodos da classe GrupoDao.
      */
     @Test
     public void testBuscarTodos() throws Exception {
-        int idAtividade = 0;
-        GrupoDao instance = GrupoDao.getInstance();
-        List<Grupo> result = instance.buscarTodos(idAtividade);
+        List<Grupo> result = GRUPO_DAO.buscarTodos(ATIVIDADE_ID);
         assertNotNull(result);
     }
 
@@ -121,9 +130,7 @@ public class GrupoDaoTest {
      */
     @Test
     public void testBuscarAlunos() throws Exception {
-        int idGrupo = 0;
-        GrupoDao instance = GrupoDao.getInstance();
-        List<Aluno> result = instance.buscarAlunos(idGrupo);
+        List<Aluno> result = GRUPO_DAO.buscarAlunos(GRUPO.getIdGrupoServidor());
         assertNotNull(result);
     }
 
@@ -132,9 +139,7 @@ public class GrupoDaoTest {
      */
     @Test
     public void testDeleteAlunos() throws Exception {
-        int idGrupo = 0;
-        GrupoDao instance = GrupoDao.getInstance();
-        instance.deleteAlunos(idGrupo);
+        GRUPO_DAO.deleteAlunos(GRUPO.getIdGrupoServidor());
     }
     
 }

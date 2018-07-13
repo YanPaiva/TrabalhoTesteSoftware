@@ -5,11 +5,8 @@
  */
 package dao;
 
-import classe.Disciplina;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import static dao.Dados.DISCIPLINA;
+import static dao.Dados.DISCIPLINA_DAO;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,14 +15,13 @@ import static org.junit.Assert.*;
  * @author marit
  */
 public class DisciplinaDaoTest {
-    
+      
     /**
      * Teste do metodo getInstance da classe DisciplinaDao.
      */
     @Test
     public void testGetInstance() {
-        DisciplinaDao result = DisciplinaDao.getInstance();
-        assertNotNull(result);
+        assertNotNull(DISCIPLINA_DAO);
     }
 
     /**
@@ -33,9 +29,7 @@ public class DisciplinaDaoTest {
      */
     @Test
     public void testSalvar() throws Exception {
-        Disciplina disciplina = Disciplina.getInstance();
-        DisciplinaDao instance = DisciplinaDao.getInstance();
-        instance.salvar(disciplina);
+        DISCIPLINA_DAO.salvar(DISCIPLINA);
     }
 
     /**
@@ -43,10 +37,8 @@ public class DisciplinaDaoTest {
      */
     @Test
     public void testBuscar() throws Exception {
-        int idDisciplina = 0;
-        DisciplinaDao instance = DisciplinaDao.getInstance();
         boolean expResult = false;
-        boolean result = instance.buscar(idDisciplina);
+        boolean result = DISCIPLINA_DAO.buscar(DISCIPLINA.getIdDisciplinaServidor());
         assertEquals(expResult, result);
     }
 
@@ -55,9 +47,7 @@ public class DisciplinaDaoTest {
      */
     @Test
     public void testAlterar() throws Exception {
-        Disciplina disciplina = Disciplina.getInstance();
-        DisciplinaDao instance = DisciplinaDao.getInstance();
-        instance.alterar(disciplina);
+        DISCIPLINA_DAO.alterar(DISCIPLINA);
     }
 
     /**

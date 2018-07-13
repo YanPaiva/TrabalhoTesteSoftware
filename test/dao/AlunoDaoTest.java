@@ -6,11 +6,11 @@
 package dao;
 
 import classe.Aluno;
+import static dao.Dados.ALUNO_1;
+import static dao.Dados.ALUNO_2;
+import static dao.Dados.ALUNO_DAO;
+import static dao.Dados.ATIVIDADE_ID;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
  * @author marit
  */
 public class AlunoDaoTest {
-    
+   
     /**
      * Teste do metodo getInstance da classe AlunoDao.
      */
@@ -34,9 +34,15 @@ public class AlunoDaoTest {
      */
     @Test
     public void testSalvar() throws Exception {
-        Aluno aluno = new Aluno(5,"Marta",55.00);
-        AlunoDao instance = new AlunoDao();
-        instance.salvar(aluno);
+               
+        if(ALUNO_DAO.buscar(ALUNO_1.getIdAlunoServidor()) == null){
+            ALUNO_DAO.salvar(ALUNO_1);
+            ALUNO_DAO.insereNota(ALUNO_1, ATIVIDADE_ID);            
+        }else{
+            ALUNO_DAO.alterar(ALUNO_1);
+            ALUNO_DAO.atualizaNota(ALUNO_1, ATIVIDADE_ID);
+        }
+            
     }
 
     /**
@@ -44,11 +50,12 @@ public class AlunoDaoTest {
      */
     @Test
     public void testBuscar_int() throws Exception {
-        int idAluno = 5;
-        AlunoDao instance = new AlunoDao();
-        Aluno aluno = new Aluno(5,"Marta",55.00);
-        Aluno result = instance.buscar(idAluno);
-        assertEquals(aluno, result);
+        Aluno result = Dados.ALUNO_DAO.buscar(ALUNO_1.getIdAlunoServidor());
+        
+        boolean id = (ALUNO_1.getIdAlunoServidor() == result.getIdAlunoServidor());
+        boolean nome = (ALUNO_1.getNome().equals(result.getNome()));
+                
+        assertTrue(id && nome);
     }
 
     /**
@@ -56,12 +63,13 @@ public class AlunoDaoTest {
      */
     @Test
     public void testBuscar_int_int() throws Exception {
-        int idAluno = 3;
-        int idAtividade = 1;
-        AlunoDao instance = new AlunoDao();
-        Aluno aluno = new Aluno(3,"José",45.00);
-        Aluno result = instance.buscar(idAluno, idAtividade);
-        assertEquals(aluno, result);
+        Aluno result = ALUNO_DAO.buscar(ALUNO_1.getIdAlunoServidor(), ATIVIDADE_ID);
+        
+        boolean id = (ALUNO_1.getIdAlunoServidor() == result.getIdAlunoServidor());
+        boolean nome = (ALUNO_1.getNome().equals(result.getNome()));
+        boolean nota = (ALUNO_1.getNota()== result.getNota());
+                
+        assertTrue(id && nome && nota);
     }
 
     /**
@@ -69,8 +77,7 @@ public class AlunoDaoTest {
      */
     @Test
     public void testBuscarTodos() throws Exception {
-        AlunoDao instance = new AlunoDao();
-        List<Aluno> result = instance.buscarTodos();
+        List<Aluno> result = ALUNO_DAO.buscarTodos();
         assertNotNull(result);
     }
 
@@ -79,9 +86,13 @@ public class AlunoDaoTest {
      */
     @Test
     public void testAlterar() throws Exception {
-        Aluno aluno = new Aluno(3,"Henrique",50.00);
-        AlunoDao instance = new AlunoDao();
-        instance.alterar(aluno);
+        
+        if(ALUNO_DAO.buscar(ALUNO_2.getIdAlunoServidor()) == null){
+            ALUNO_DAO.salvar(ALUNO_2);
+        }
+        
+        ALUNO_2.setNota(85);
+        ALUNO_DAO.alterar(ALUNO_2);
     }
     
 }

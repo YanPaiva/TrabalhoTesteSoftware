@@ -33,7 +33,7 @@ public class DatabaseLocator {
         String url = "jdbc:mysql://" + serverName + "/" + mydatabase; 
         
         Class.forName("com.mysql.jdbc.Driver");
-        Connection conn = (Connection) DriverManager.getConnection(url, "root", "");
+        Connection conn = (Connection) DriverManager.getConnection(url, "root", "root");
         return conn;
     }
     

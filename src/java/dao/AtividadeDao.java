@@ -21,7 +21,7 @@ import java.util.List;
 public class AtividadeDao {
     private static AtividadeDao instance;
     
-    public AtividadeDao(){}
+    private AtividadeDao(){}
     
     public static AtividadeDao getInstance(){
         if(instance == null)
