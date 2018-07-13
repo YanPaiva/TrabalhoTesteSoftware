@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Disciplina.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;TrabalhoFinalTeste&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">classe</a> &gt; <span class="el_source">Disciplina.java</span></div><h1>Disciplina.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package classe;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author fernanda
+ */
+public class Disciplina {
+    
+    private static Disciplina instance;
+    private int idDisciplinaServidor;
+    private String disciplina;
+    private Atividade atividade;
+<span class="fc" id="L21">    private List&lt;Aluno&gt; alunos = new ArrayList&lt;&gt;();</span>
+    
+    public static Disciplina getInstance(){
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if(instance == null){</span>
+<span class="fc" id="L25">            instance = new Disciplina();</span>
+        }
+<span class="fc" id="L27">        return instance;</span>
+    }
+    
+<span class="fc" id="L30">    public Disciplina() {}</span>
+ 
+    public int getIdDisciplinaServidor() {
+<span class="fc" id="L33">        return idDisciplinaServidor;</span>
+    }
+
+    public void setIdDisciplinaServidor(int idDisciplinaServidor) {
+<span class="fc" id="L37">        this.idDisciplinaServidor = idDisciplinaServidor;</span>
+<span class="fc" id="L38">    }</span>
+
+    public String getDisciplina() {
+<span class="fc" id="L41">        return disciplina;</span>
+    }
+
+    public void setDisciplina(String disciplina) {
+<span class="fc" id="L45">        this.disciplina = disciplina;</span>
+<span class="fc" id="L46">    }</span>
+
+    public Atividade getAtividade() {
+<span class="fc" id="L49">        return atividade;</span>
+    }
+
+    public void setAtividade(Atividade atividade) {
+<span class="fc" id="L53">        this.atividade = atividade;</span>
+<span class="fc" id="L54">    }</span>
+
+    public List&lt;Aluno&gt; getAlunos() {
+<span class="fc" id="L57">        return alunos;</span>
+    }
+
+    public void setAlunos(List&lt;Aluno&gt; alunos) {
+<span class="fc" id="L61">        this.alunos = alunos;</span>
+<span class="fc" id="L62">    }</span>
+    
+    public void setAlunos(Aluno aluno) {
+<span class="fc" id="L65">        this.alunos.add(aluno);</span>
+<span class="fc" id="L66">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
